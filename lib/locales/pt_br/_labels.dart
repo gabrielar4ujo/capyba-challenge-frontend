@@ -1,4 +1,4 @@
 const labels = {
-  "email": "Email",
+  "email": "E-mail",
   "password": "Senha"
 };
