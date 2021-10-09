@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class InputText extends StatelessWidget {
@@ -23,14 +24,14 @@ class InputText extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: TextFormField(
-        cursorColor: Colors.white,
+        cursorColor: Color(AppColors.get("white92")),
         enabled: !disableInput!,
         validator: (text) {
           if (validator == null) return null;
           return validator!(text.toString());
         },
         onSaved: (text) => onSaved!(text),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: Color(AppColors.get("white92"))),
         obscureText: hiddenText,
         decoration: InputDecoration(
             errorStyle: const TextStyle(height: 1, color: Colors.white70),

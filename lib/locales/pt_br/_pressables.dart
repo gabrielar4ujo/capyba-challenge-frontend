@@ -1,0 +1,3 @@
+const pressables = {
+  "pressRegister": "Cadastrar",
+};

@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomHeader extends StatelessWidget {
@@ -19,7 +20,8 @@ class CustomHeader extends StatelessWidget {
         color: const Color(0xff222831),
         child: Text(
           title,
-          style: const TextStyle(color: Colors.white, fontSize: 30),
+          style:
+              TextStyle(color: Color(AppColors.get("white92")), fontSize: 30),
         ),
       ),
     );

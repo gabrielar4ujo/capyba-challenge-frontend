@@ -25,20 +25,19 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppColors _appColors = AppColors();
     return ElevatedButton(
         onPressed:
             (!disableButton && !loadingButton) ? () => onPressed() : () {},
         style: ElevatedButton.styleFrom(
-            primary: Color(_appColors.get(backgroundColor)),
+            primary: Color(AppColors.get(backgroundColor)),
             padding: size,
-            side: BorderSide(color: Color(_appColors.get(borderColor))),
+            side: BorderSide(color: Color(AppColors.get(borderColor))),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)))),
         child: loadingButton
             ? SizedBox(
                 child: CircularProgressIndicator(
-                  color: Color(_appColors.get("white92")),
+                  color: Color(AppColors.get("white92")),
                 ),
                 height: 21,
                 width: 21,
@@ -46,7 +45,7 @@ class CustomButton extends StatelessWidget {
             : Text(
                 text.toString(),
                 style: TextStyle(
-                    color: Color(_appColors.get(borderColor)),
+                    color: Color(AppColors.get(borderColor)),
                     fontSize: fontSize),
               ));
   }

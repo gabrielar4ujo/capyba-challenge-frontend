@@ -1,4 +1,4 @@
-import 'package:capyba_challenge_frontend/locales/pt_br/labels.dart';
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/shared/constants/validators/text_validator.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
@@ -29,7 +29,7 @@ class _FormLoginState extends State<FormLogin> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           InputText(
-            title: Labels().get("email"),
+            title: Labels.get("email"),
             onSaved: _setEmail,
             validator: _textValidator.emailIsValid,
             disableInput: widget.disableForm,
@@ -39,8 +39,8 @@ class _FormLoginState extends State<FormLogin> {
             height: 20,
           ),
           InputText(
-            title: Labels().get("password"),
-            // hiddenText: true,
+            title: Labels.get("password"),
+            hiddenText: true,
             onSaved: _setPassword,
             validator: _textValidator.textIsNotEmpty,
             disableInput: widget.disableForm,
@@ -56,7 +56,7 @@ class _FormLoginState extends State<FormLogin> {
                 widget.handleSubmit(_email, _password);
               }
             },
-            text: "Entrar",
+            text: Labels.get("toEnter"),
             loadingButton: widget.disableForm,
           )
         ],

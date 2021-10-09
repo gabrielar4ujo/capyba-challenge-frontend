@@ -1,4 +1,4 @@
-import 'package:capyba_challenge_frontend/pages/LoginPage/login_page.dart';
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/SplashPage/splash_page.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +8,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Capyba Challenge',
+      title: Labels.get("appName"),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,

@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/HomePage/home_page.dart';
 import 'package:capyba_challenge_frontend/pages/LoginPage/login_page.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
@@ -13,7 +14,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  final AppColors _appColors = AppColors();
   late AuthService _authService =
       _authService = Provider.of<AuthService>(context, listen: false);
 
@@ -32,8 +32,27 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color(_appColors.get("accentPink")),
+    return Material(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        alignment: Alignment.center,
+        color: Color(AppColors.get("accentPink")),
+        child: Container(
+          width: double.maxFinite,
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height * 0.6,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: Color(AppColors.get("darkBlue"))),
+          child: Text(
+            Labels.get("appName"),
+            style: TextStyle(
+                color: Color(AppColors.get("white92")),
+                fontSize: 45,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
     );
   }
 

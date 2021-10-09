@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/HomePage/home_page.dart';
 import 'package:capyba_challenge_frontend/pages/LoginPage/widgets/form_login.dart';
 import 'package:capyba_challenge_frontend/pages/RegisterPage/register_page.dart';
@@ -21,16 +22,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
-    final AppColors _appColors = AppColors();
     AuthService _authService = Provider.of<AuthService>(context);
-    print(_authService.user);
 
     void _handleSubmit(String email, String password) async {
       try {
         await _authService.login(email, password);
         _navigateToHome();
       } catch (e) {
-        print(e);
+        _showSnackBar(Labels.get("errorLogin"));
       }
     }
 
@@ -40,16 +39,16 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-      backgroundColor: Color(_appColors.get("accentPink")),
+      backgroundColor: Color(AppColors.get("accentPink")),
       appBar: AppBar(
         toolbarHeight: 0,
-        backgroundColor: Color(_appColors.get("accentPink")),
+        backgroundColor: Color(AppColors.get("accentPink")),
         elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const CustomHeader(title: "Login"),
+            CustomHeader(title: Labels.get("login")),
             ConstrainedBox(
                 constraints: BoxConstraints(minHeight: _height * 0.55),
                 child: Padding(
@@ -62,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               width: _width,
               height: 30,
-              color: Color(_appColors.get("white92")),
+              color: Color(AppColors.get("white92")),
             ),
             ConstrainedBox(
               constraints: const BoxConstraints(
@@ -71,23 +70,22 @@ class _LoginPageState extends State<LoginPage> {
               child: Container(
                 width: _width,
                 height: (_height * 0.45) - 150,
-                color: Color(_appColors.get("darkBlue")),
+                color: Color(AppColors.get("darkBlue")),
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      "Ainda não é cadastrado?",
+                      Labels.get("notRegisteredYet"),
                       style: TextStyle(
-                          fontSize: 16,
-                          color: Color(_appColors.get("white92"))),
+                          fontSize: 16, color: Color(AppColors.get("white92"))),
                     ),
                     const CustomDivider(
                       height: 15,
                     ),
                     CustomButton(
                       onPressed: _navigateToRegister,
-                      text: "Cadastre-se",
+                      text: Labels.get("signUp"),
                       fontSize: 14,
                       disableButton: _authService.isLoading,
                       size: const EdgeInsets.symmetric(
@@ -108,5 +106,9 @@ class _LoginPageState extends State<LoginPage> {
   void _navigateToHome() {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const HomePage()));
+  }
+
+  void _showSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 }

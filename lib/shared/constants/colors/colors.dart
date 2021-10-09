@@ -1,10 +1,7 @@
-class AppColors {
-  final Map<String,String> _colors = {
-    "white92": "0xffdddddd",
-    "accentPink": "0xfff05454",
-    "darkBlue": "0xff30475e",
-    "mediumBlack": "0xff222831"
-  };
+import 'package:capyba_challenge_frontend/shared/constants/colors/_default_colors.dart';
 
-  int get(String colorName) => int.parse(_colors[colorName].toString());
-} 
+class AppColors {
+  static int get(String colorName) {
+    return int.parse(colors[colorName].toString());
+  }
+}

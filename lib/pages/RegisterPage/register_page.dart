@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/HomePage/home_page.dart';
 import 'package:capyba_challenge_frontend/pages/RegisterPage/widgets/form_register.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
@@ -13,8 +14,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final AppColors _appColors = AppColors();
-
   @override
   Widget build(BuildContext context) {
     final _height = MediaQuery.of(context).size.height;
@@ -29,10 +28,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cadastre-se"),
-        backgroundColor: Color(_appColors.get("darkBlue")),
+        title: Text(Labels.get("signUp")),
+        backgroundColor: Color(AppColors.get("darkBlue")),
       ),
-      backgroundColor: Color(_appColors.get("accentPink")),
+      backgroundColor: Color(AppColors.get("accentPink")),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -46,8 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25)),
-                color: Color(_appColors.get("darkBlue"))),
-            // constraints: const BoxConstraints(minHeight: 500, maxHeight: 650),
+                color: Color(AppColors.get("darkBlue"))),
             constraints: const BoxConstraints(minHeight: 500, maxHeight: 570),
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: FormRegister(

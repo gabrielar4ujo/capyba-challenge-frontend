@@ -22,3 +22,11 @@ samples, guidance on mobile development, and a full API reference.
     [x] Exigir o aceite de termos de uso e políticas de privacidade
     [x] O usuário poderá ler o termo e política
     [x] Após o login da pessoa, caso ela feche o app e abra de novo, o app deve continuar logado e mostrar a página de home
+
+
+TODO:
+  [] Bloqueiar o usuário de usar espaço ao digitar email
+  [] Iniciar nome do usuário com letra maiúscula
+  [] Adicionar melhores feedbacks quando ocorrer erro ao logar e registrar
+  [] Revisar serviço de login
+  [] Revisar estrutura do projeto (in progress)

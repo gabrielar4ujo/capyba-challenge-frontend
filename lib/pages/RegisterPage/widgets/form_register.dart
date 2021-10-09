@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/PrivacyPolicyPage/privacy_policy_page.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/constants/validators/text_validator.dart';
@@ -20,7 +21,6 @@ class FormRegister extends StatefulWidget {
 }
 
 class _FormRegisterState extends State<FormRegister> {
-  final AppColors _appColors = AppColors();
   final _formKey = GlobalKey<FormState>();
   final TextValidator _textValidator = TextValidator();
   final ImagePicker _imagePicker = ImagePicker();
@@ -40,8 +40,8 @@ class _FormRegisterState extends State<FormRegister> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InputText(
-            title: "Nome*",
-            color: Color(_appColors.get("accentPink")),
+            title: Labels.get("mandatoryName"),
+            color: Color(AppColors.get("accentPink")),
             horizontalPadding: 0,
             onSaved: _setName,
             validator: _textValidator.textIsNotEmpty,
@@ -51,8 +51,8 @@ class _FormRegisterState extends State<FormRegister> {
             height: 40,
           ),
           Text(
-            "Deixe-nos ver quem é você!\nAdicione uma foto sua.*",
-            style: TextStyle(color: Color(_appColors.get("accentPink"))),
+            Labels.get("takeYourPicture"),
+            style: TextStyle(color: Color(AppColors.get("accentPink"))),
           ),
           const CustomDivider(),
           SizedBox(
@@ -73,19 +73,18 @@ class _FormRegisterState extends State<FormRegister> {
                                 _image = image;
                               });
                             } catch (e) {
-                              _showSnackBar(
-                                  "Erro desconhecido ao iniciar a câmera!");
+                              _showSnackBar(Labels.get("errorCamera"));
                             }
                           },
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           border: Border.all(
-                              color: Color(_appColors.get('accentPink')))),
+                              color: Color(AppColors.get('accentPink')))),
                       child: Text(
                         "+",
                         style: TextStyle(
-                            color: Color(_appColors.get('accentPink')),
+                            color: Color(AppColors.get('accentPink')),
                             fontSize: 20),
                       ),
                     ),
@@ -93,8 +92,8 @@ class _FormRegisterState extends State<FormRegister> {
           ),
           const CustomDivider(),
           InputText(
-            title: "E-mail*",
-            color: Color(_appColors.get("accentPink")),
+            title: Labels.get("mandatoryEmail"),
+            color: Color(AppColors.get("accentPink")),
             horizontalPadding: 0,
             onSaved: _setEmail,
             validator: _textValidator.emailIsValid,
@@ -102,8 +101,8 @@ class _FormRegisterState extends State<FormRegister> {
           ),
           const CustomDivider(),
           InputText(
-            title: "Senha*",
-            color: Color(_appColors.get("accentPink")),
+            title: Labels.get("mandatoryPassword"),
+            color: Color(AppColors.get("accentPink")),
             horizontalPadding: 0,
             hiddenText: true,
             onSaved: _setPassword,
@@ -113,7 +112,7 @@ class _FormRegisterState extends State<FormRegister> {
           const CustomDivider(),
           // InputText(
           //   title: "Confirmar senha*",
-          //   color: Color(_appColors.get("accentPink")),
+          //   color: Color(AppColors.get("accentPink")),
           //   horizontalPadding: 0,
           //   hiddenText: true,
           //   onSaved: _setConfirmPassword,
@@ -129,7 +128,7 @@ class _FormRegisterState extends State<FormRegister> {
                       const VisualDensity(horizontal: -4, vertical: -4),
                   value: _checkStatus,
                   fillColor: MaterialStateProperty.resolveWith(
-                      (states) => Color(_appColors.get("accentPink"))),
+                      (states) => Color(AppColors.get("accentPink"))),
                   onChanged: (bool? status) {
                     if (widget.disableForm) return;
                     setState(() {
@@ -137,18 +136,18 @@ class _FormRegisterState extends State<FormRegister> {
                     });
                   },
                   activeColor: Color(
-                    _appColors.get("accentPink"),
+                    AppColors.get("accentPink"),
                   )),
               Padding(
                 padding: const EdgeInsets.only(left: 5),
                 child: InkWell(
                   onTap: _navigateToPrivacyPolicy,
                   child: Text(
-                    "Política de privacidade",
+                    Labels.get("privacyPolicy"),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
-                        color: Color(_appColors.get("accentPink"))),
+                        color: Color(AppColors.get("accentPink"))),
                   ),
                 ),
               )
@@ -162,23 +161,22 @@ class _FormRegisterState extends State<FormRegister> {
                 _formKey.currentState!.save();
                 if (_formKey.currentState!.validate()) {
                   if (_image == null) {
-                    _showSnackBar("Foto é obrigatória!");
+                    _showSnackBar(Labels.get("mandatoryPicture"));
                     return;
                   }
                   if (!_checkStatus!) {
-                    _showSnackBar(
-                        "É preciso aceitar os termos de privacidade!");
+                    _showSnackBar(Labels.get("mandatoryPrivacyPolicy"));
                     return;
                   }
                   try {
                     await widget.handleSubmit(
                         _email, _password, _image!.path, _name);
                   } catch (e) {
-                    _showSnackBar("Erro!");
+                    _showSnackBar(Labels.get("errorSignUp"));
                   }
                 }
               },
-              text: "Cadastrar",
+              text: Labels.get("pressRegister"),
               backgroundColor: "darkBlue",
               borderColor: "accentPink",
             ),
@@ -209,7 +207,7 @@ class _FormRegisterState extends State<FormRegister> {
         MaterialPageRoute(builder: (context) => const PrivacyPolicyPage()));
   }
 
-  _showSnackBar(String text) {
+  void _showSnackBar(String text) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 }
