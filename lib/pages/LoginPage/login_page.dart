@@ -35,9 +35,8 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     void _navigateToRegister() {
-      print(_authService.user);
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => const RegisterPage()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const RegisterPage()));
     }
 
     return Scaffold(
