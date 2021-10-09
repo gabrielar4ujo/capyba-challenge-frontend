@@ -8,6 +8,8 @@ class CustomButton extends StatelessWidget {
   final double fontSize;
   final String backgroundColor;
   final String borderColor;
+  final bool disableButton;
+  final bool loadingButton;
 
   const CustomButton(
       {Key? key,
@@ -16,6 +18,8 @@ class CustomButton extends StatelessWidget {
       this.fontSize = 18,
       this.borderColor = "mediumBlack",
       this.backgroundColor = "accentPink",
+      this.disableButton = false,
+      this.loadingButton = false,
       this.size = const EdgeInsets.symmetric(horizontal: 25, vertical: 15)})
       : super(key: key);
 
@@ -23,17 +27,27 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppColors _appColors = AppColors();
     return ElevatedButton(
-        onPressed: () => onPressed(),
+        onPressed:
+            (!disableButton && !loadingButton) ? () => onPressed() : () {},
         style: ElevatedButton.styleFrom(
             primary: Color(_appColors.get(backgroundColor)),
             padding: size,
             side: BorderSide(color: Color(_appColors.get(borderColor))),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(6)))),
-        child: Text(
-          text.toString(),
-          style: TextStyle(
-              color: Color(_appColors.get(borderColor)), fontSize: fontSize),
-        ));
+        child: loadingButton
+            ? SizedBox(
+                child: CircularProgressIndicator(
+                  color: Color(_appColors.get("white92")),
+                ),
+                height: 21,
+                width: 21,
+              )
+            : Text(
+                text.toString(),
+                style: TextStyle(
+                    color: Color(_appColors.get(borderColor)),
+                    fontSize: fontSize),
+              ));
   }
 }

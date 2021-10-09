@@ -14,3 +14,11 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+### Tasks
+  ## Primeira Etapa
+    [x] Cadastro e login via email
+    [x] Exigir selfie do usuário no cadastro
+    [x] Exigir o aceite de termos de uso e políticas de privacidade
+    [x] O usuário poderá ler o termo e política
+    [x] Após o login da pessoa, caso ela feche o app e abra de novo, o app deve continuar logado e mostrar a página de home

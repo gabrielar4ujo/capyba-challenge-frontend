@@ -4,35 +4,27 @@ import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
 import 'package:flutter/material.dart';
 
-class CustomFormField extends StatefulWidget {
-  final GlobalKey<FormState> formKey;
-  const CustomFormField({Key? key, required this.formKey}) : super(key: key);
+class FormLogin extends StatefulWidget {
+  final Function(String, String) handleSubmit;
+  final bool disableForm;
+  const FormLogin(
+      {Key? key, required this.handleSubmit, this.disableForm = false})
+      : super(key: key);
 
   @override
-  _CustomFormFieldState createState() => _CustomFormFieldState();
+  _FormLoginState createState() => _FormLoginState();
 }
 
-class _CustomFormFieldState extends State<CustomFormField> {
+class _FormLoginState extends State<FormLogin> {
   String _email = "";
   String _password = "";
   final TextValidator _textValidator = TextValidator();
-
-  void _setEmail(text) {
-    setState(() {
-      _email = text;
-    });
-  }
-
-  void _setPassword(text) {
-    setState(() {
-      _password = text;
-    });
-  }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: widget.formKey,
+      key: _formKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -40,35 +32,43 @@ class _CustomFormFieldState extends State<CustomFormField> {
             title: Labels().get("email"),
             onSaved: _setEmail,
             validator: _textValidator.emailIsValid,
-            errorMessage: "Email inválido!"
+            disableInput: widget.disableForm,
           ),
           const Divider(
             color: Colors.transparent,
-            height: 45,
+            height: 20,
           ),
           InputText(
             title: Labels().get("password"),
-            hiddenText: true,
+            // hiddenText: true,
             onSaved: _setPassword,
             validator: _textValidator.textIsNotEmpty,
-             errorMessage: "Campo de senha não pode ser vazio!"
+            disableInput: widget.disableForm,
           ),
           const Divider(
             color: Colors.transparent,
             height: 45,
           ),
           CustomButton(
-              onPressed: () {
-                widget.formKey.currentState!.save();
-                if (widget.formKey.currentState!.validate())
-                  print("chamar login");
-                else
-                  print("Error, não chamar login");
-                print("Email: $_email\nPassword: $_password");
-              },
-              text: "Entrar")
+            onPressed: () async {
+              _formKey.currentState!.save();
+              if (_formKey.currentState!.validate()) {
+                widget.handleSubmit(_email, _password);
+              }
+            },
+            text: "Entrar",
+            loadingButton: widget.disableForm,
+          )
         ],
       ),
     );
+  }
+
+  void _setEmail(text) {
+    _email = text;
+  }
+
+  void _setPassword(text) {
+    _password = text;
   }
 }

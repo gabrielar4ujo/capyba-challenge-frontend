@@ -1,9 +1,13 @@
-import 'package:capyba_challenge_frontend/pages/LoginPage/widgets/form_field.dart';
+import 'package:capyba_challenge_frontend/pages/HomePage/home_page.dart';
+import 'package:capyba_challenge_frontend/pages/LoginPage/widgets/form_login.dart';
 import 'package:capyba_challenge_frontend/pages/RegisterPage/register_page.dart';
+import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
+import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_header.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,15 +17,27 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
     final double _height = MediaQuery.of(context).size.height;
     final AppColors _appColors = AppColors();
+    AuthService _authService = Provider.of<AuthService>(context);
+    print(_authService.user);
+
+    void _handleSubmit(String email, String password) async {
+      try {
+        await _authService.login(email, password);
+        _navigateToHome();
+      } catch (e) {
+        print(e);
+      }
+    }
+
     void _navigateToRegister() {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const RegisterPage()));
+      print(_authService.user);
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => const RegisterPage()));
     }
 
     return Scaffold(
@@ -39,8 +55,9 @@ class _LoginPageState extends State<LoginPage> {
                 constraints: BoxConstraints(minHeight: _height * 0.55),
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 35),
-                  child: CustomFormField(
-                    formKey: _formKey,
+                  child: FormLogin(
+                    handleSubmit: _handleSubmit,
+                    disableForm: _authService.isLoading,
                   ),
                 )),
             Container(
@@ -66,15 +83,18 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 16,
                           color: Color(_appColors.get("white92"))),
                     ),
-                    const Divider(
-                      color: Colors.transparent,
+                    const CustomDivider(
                       height: 15,
                     ),
                     CustomButton(
                       onPressed: _navigateToRegister,
                       text: "Cadastre-se",
                       fontSize: 14,
-                      size: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      disableButton: _authService.isLoading,
+                      size: const EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 10,
+                      ),
                     )
                   ],
                 ),
@@ -84,5 +104,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _navigateToHome() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const HomePage()));
   }
 }
