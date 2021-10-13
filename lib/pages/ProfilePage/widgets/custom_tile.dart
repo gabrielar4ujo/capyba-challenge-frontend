@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
+import 'package:capyba_challenge_frontend/shared/models/user_data_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
 import 'package:flutter/material.dart';
 
 class CustomTile extends StatelessWidget {
-  final String title;
-  final String? photo;
-  const CustomTile({Key? key, required this.title, this.photo})
-      : super(key: key);
+  final UserDataModel userDataModel;
+  const CustomTile({Key? key, required this.userDataModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +13,32 @@ class CustomTile extends StatelessWidget {
       children: [
         ListTile(
           contentPadding: EdgeInsets.zero,
+          subtitle: Text(
+            userDataModel.subtitle != null
+                ? userDataModel.subtitle.toString()
+                : "",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           trailing: InkWell(
             child: Container(
                 width: 66,
                 alignment: Alignment.centerRight,
-                child: Row(
-                  children: const [
-                    Text("Alterar"),
-                    Icon(Icons.keyboard_arrow_right)
-                  ],
+                child: InkWell(
+                  onTap: userDataModel.navigate,
+                  child: Row(
+                    children: const [
+                      Text("Alterar"),
+                      Icon(Icons.keyboard_arrow_right)
+                    ],
+                  ),
                 )),
           ),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title),
-              photo != null
+              Text(userDataModel.title),
+              userDataModel.photo != null
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -39,7 +46,7 @@ class CustomTile extends StatelessWidget {
                           height: 10,
                         ),
                         Image.network(
-                          photo.toString(),
+                          userDataModel.photo.toString(),
                           height: 50,
                           width: 50,
                         ),
@@ -50,7 +57,7 @@ class CustomTile extends StatelessWidget {
           ),
         ),
         Container(
-          height: photo == null ? 1 : 0,
+          height: userDataModel.photo == null ? 1 : 0,
           width: double.maxFinite,
           color: Color(AppColors.get('darkBlue')),
         ),

@@ -1,5 +1,6 @@
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InputText extends StatelessWidget {
   final Function(String)? validator;
@@ -9,6 +10,7 @@ class InputText extends StatelessWidget {
   final Color color;
   final double horizontalPadding;
   final Function? onSaved;
+  final List<TextInputFormatter>? formatter;
   const InputText(
       {Key? key,
       required this.title,
@@ -17,13 +19,15 @@ class InputText extends StatelessWidget {
       this.validator,
       this.disableInput = false,
       this.color = const Color(0xff30475e),
-      this.horizontalPadding = 40})
+      this.horizontalPadding = 40,
+      this.formatter})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: TextFormField(
+        inputFormatters: formatter,
         cursorColor: Color(AppColors.get("white92")),
         enabled: !disableInput!,
         validator: (text) {

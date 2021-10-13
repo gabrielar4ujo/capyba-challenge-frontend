@@ -28,13 +28,12 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: senha);
-      User localUser = result.user!;
+      User? localUser = result.user!;
       if (localUser == null) throw FirebaseAuthException(code: "Network-error");
       String? photoUrl = await uploadFile(_image, localUser.uid);
       if (photoUrl == null) {
         throw FirebaseAuthException(code: "Problema ao fazer upload de imagem");
       }
-      print(photoUrl);
       await localUser.updateDisplayName(_name);
       await localUser.updatePhotoURL(photoUrl);
       _getUser();
@@ -114,5 +113,65 @@ class AuthService extends ChangeNotifier {
     final TaskSnapshot downloadUrl = (await uploadTask);
     final String url = await downloadUrl.ref.getDownloadURL();
     return url;
+  }
+
+  Future<void> updatePhotoURL(io.File? file) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      String? photoUrl = await uploadFile(file, user!.uid);
+      if (photoUrl == null) {
+        throw FirebaseAuthException(code: "Problema ao fazer upload de imagem");
+      }
+      await user!.updatePhotoURL(photoUrl);
+      reloadUser();
+    } catch (e) {
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future changeUserName(_newName) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      await user!.updateDisplayName(_newName);
+      reloadUser();
+    } catch (e) {
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future changeUserEmail(_newEmail, _oldEmail, _currentPassword) async {
+    try {
+      await login(_oldEmail, _currentPassword);
+      isLoading = true;
+      notifyListeners();
+      await user!.updateEmail(_newEmail);
+      reloadUser();
+    } catch (e) {
+      print("error");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future changeUserPassword(_newPassword, _currentEmail, _oldPassword) async {
+    try {
+      await login(_currentEmail, _oldPassword);
+      isLoading = true;
+      notifyListeners();
+      await user!.updatePassword(_newPassword);
+      reloadUser();
+    } catch (e) {
+      print("error");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }

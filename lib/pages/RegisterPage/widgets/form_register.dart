@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/PrivacyPolicyPage/privacy_policy_page.dart';
+import 'package:capyba_challenge_frontend/shared/camera/camera.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/constants/validators/text_validator.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class FormRegister extends StatefulWidget {
   final Function(String, String, File, String) handleSubmit;
@@ -23,14 +23,12 @@ class FormRegister extends StatefulWidget {
 class _FormRegisterState extends State<FormRegister> {
   final _formKey = GlobalKey<FormState>();
   final TextValidator _textValidator = TextValidator();
-  final ImagePicker _imagePicker = ImagePicker();
+  final Camera _imagePicker = Camera();
 
   bool? _checkStatus = false;
   String _name = "";
   String _email = "";
   String _password = "";
-  // String _confirmPassword = "";
-  XFile? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -58,20 +56,17 @@ class _FormRegisterState extends State<FormRegister> {
           SizedBox(
             width: 65,
             height: 65,
-            child: _image != null
+            child: _imagePicker.image != null
                 ? Image.file(File(
-                    _image!.path,
+                    _imagePicker.image!.path,
                   ))
                 : InkWell(
                     onTap: widget.disableForm
                         ? () {}
                         : () async {
                             try {
-                              XFile? image = await _imagePicker.pickImage(
-                                  imageQuality: 70, source: ImageSource.camera);
-                              setState(() {
-                                _image = image;
-                              });
+                              await _imagePicker.takePicture();
+                              setState(() {});
                             } catch (e) {
                               _showSnackBar(Labels.get("errorCamera"));
                             }
@@ -160,7 +155,7 @@ class _FormRegisterState extends State<FormRegister> {
               onPressed: () async {
                 _formKey.currentState!.save();
                 if (_formKey.currentState!.validate()) {
-                  if (_image == null) {
+                  if (_imagePicker.image == null) {
                     _showSnackBar(Labels.get("mandatoryPicture"));
                     return;
                   }
@@ -169,8 +164,8 @@ class _FormRegisterState extends State<FormRegister> {
                     return;
                   }
                   try {
-                    await widget.handleSubmit(
-                        _email, _password, File(_image!.path), _name);
+                    await widget.handleSubmit(_email, _password,
+                        File(_imagePicker.image!.path), _name);
                   } catch (e) {
                     _showSnackBar(Labels.get("errorSignUp"));
                   }

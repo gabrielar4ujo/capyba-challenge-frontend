@@ -1,6 +1,10 @@
+import 'package:capyba_challenge_frontend/pages/ChangeUserDataPage/change_user_data_page.dart';
+import 'package:capyba_challenge_frontend/pages/ChangeUserPhotoPage/change_user_photo_page.dart';
 import 'package:capyba_challenge_frontend/pages/ProfilePage/widgets/custom_tile.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
+import 'package:capyba_challenge_frontend/shared/constants/configs/change_user_data_config.dart';
+import 'package:capyba_challenge_frontend/shared/models/user_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -17,12 +21,31 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final AuthService _authService = Provider.of<AuthService>(context);
     final mappingOptions = [
-      {"title": "Nome", "onPress": () {}},
-      {"title": "Email", "onPress": () {}},
-      {"title": "Foto", "onPress": () {}, "photo": _authService.user!.photoURL},
-      {"title": "Senha", "onPress": () {}},
+      UserDataModel(
+          onTap: _navigateToChangeUserData,
+          title: "Nome",
+          subtitle: _authService.user!.displayName.toString(),
+          configName: EnumChangeUserDataConfig.changeName,
+          handleService: _authService.changeUserName),
+      UserDataModel(
+          onTap: _navigateToChangeUserData,
+          title: "Email",
+          subtitle: _authService.user!.email.toString(),
+          configName: EnumChangeUserDataConfig.changeEmail,
+          handleService: _authService.changeUserEmail),
+      UserDataModel(
+          onTap: _navigateToChangeUserPhoto,
+          title: "Foto",
+          subtitle: "Vá em alterar e veja sua foto",
+          configName: EnumChangeUserDataConfig.changePhoto,
+          handleService: _authService.changeUserName),
+      UserDataModel(
+          onTap: _navigateToChangeUserData,
+          title: "Senha",
+          subtitle: "********",
+          configName: EnumChangeUserDataConfig.changePassword,
+          handleService: _authService.changeUserPassword),
     ];
-    print(_authService.user!.photoURL);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(AppColors.get("darkBlue")),
@@ -41,12 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ListView.builder(
                   itemCount: mappingOptions.length,
                   itemBuilder: (context, index) {
-                    return CustomTile(
-                      title: mappingOptions[index]["title"].toString(),
-                      photo: mappingOptions[index].containsKey("photo")
-                          ? mappingOptions[index]["photo"].toString()
-                          : null,
-                    );
+                    return CustomTile(userDataModel: mappingOptions[index]);
                   }),
             )
           ],
@@ -56,7 +74,18 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // void _showSnackBar(String text) {
-  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
-  // }
+  void _navigateToChangeUserData(
+      {EnumChangeUserDataConfig? conf, dynamic func}) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ChangeUserDataPage(config: conf!, handleFunction: func)));
+  }
+
+  void _navigateToChangeUserPhoto(
+      {EnumChangeUserDataConfig? conf, dynamic func}) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const ChangeUserPhotoPage()));
+  }
 }
