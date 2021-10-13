@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:capyba_challenge_frontend/locales/labels.dart';
-import 'package:capyba_challenge_frontend/pages/HomePage/home_page.dart';
 import 'package:capyba_challenge_frontend/pages/RegisterPage/widgets/form_register.dart';
+import 'package:capyba_challenge_frontend/pages/TabPage/tab_page.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final _statusBarHeight = MediaQuery.of(context).padding.top;
     final _appBarHeight = AppBar().preferredSize.height;
     AuthService _authService = Provider.of<AuthService>(context);
-    _handleSubmit(
-        String email, String senha, String _image, String _name) async {
+    _handleSubmit(String email, String senha, File _image, String _name) async {
       await _authService.signUp(email, senha, _image, _name);
       _navigateToHomePage();
     }
@@ -61,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _navigateToHomePage() {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const HomePage()),
+      MaterialPageRoute(builder: (context) => const TabPage()),
       (route) => false,
     );
   }

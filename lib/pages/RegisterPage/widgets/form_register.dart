@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FormRegister extends StatefulWidget {
-  final Function(String, String, String, String) handleSubmit;
+  final Function(String, String, File, String) handleSubmit;
   final bool disableForm;
   const FormRegister(
       {Key? key, required this.handleSubmit, this.disableForm = false})
@@ -68,7 +68,7 @@ class _FormRegisterState extends State<FormRegister> {
                         : () async {
                             try {
                               XFile? image = await _imagePicker.pickImage(
-                                  source: ImageSource.camera);
+                                  imageQuality: 70, source: ImageSource.camera);
                               setState(() {
                                 _image = image;
                               });
@@ -141,7 +141,7 @@ class _FormRegisterState extends State<FormRegister> {
               Padding(
                 padding: const EdgeInsets.only(left: 5),
                 child: InkWell(
-                  onTap: _navigateToPrivacyPolicy,
+                  onTap: widget.disableForm ? () {} : _navigateToPrivacyPolicy,
                   child: Text(
                     Labels.get("privacyPolicy"),
                     style: TextStyle(
@@ -170,7 +170,7 @@ class _FormRegisterState extends State<FormRegister> {
                   }
                   try {
                     await widget.handleSubmit(
-                        _email, _password, _image!.path, _name);
+                        _email, _password, File(_image!.path), _name);
                   } catch (e) {
                     _showSnackBar(Labels.get("errorSignUp"));
                   }

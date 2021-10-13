@@ -1,7 +1,7 @@
 import 'package:capyba_challenge_frontend/locales/labels.dart';
-import 'package:capyba_challenge_frontend/pages/HomePage/home_page.dart';
 import 'package:capyba_challenge_frontend/pages/LoginPage/widgets/form_login.dart';
 import 'package:capyba_challenge_frontend/pages/RegisterPage/register_page.dart';
+import 'package:capyba_challenge_frontend/pages/TabPage/tab_page.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     void _handleSubmit(String email, String password) async {
       try {
         await _authService.login(email, password);
-        _navigateToHome();
+        _navigateToTab();
       } catch (e) {
         _showSnackBar(Labels.get("errorLogin"));
       }
@@ -103,9 +103,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _navigateToHome() {
+  void _navigateToTab() {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
+        context, MaterialPageRoute(builder: (context) => const TabPage()));
   }
 
   void _showSnackBar(String text) {
