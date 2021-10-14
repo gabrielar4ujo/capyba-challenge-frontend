@@ -2,12 +2,12 @@ import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/services/event_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
-import 'package:capyba_challenge_frontend/shared/constants/validators/text_validator.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
 import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
+import 'package:capyba_challenge_frontend/utils/validators/text_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -97,7 +97,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     await _eventService.createEvent(
                         name: _name,
                         public: !isSwitched,
-                        owner: _authService.user!.displayName.toString(),
+                        owner: _authService.displayName.toString(),
                         about: _about);
                     GlobalSnackbar.showMessage(
                         context, Labels.get("eventCreated"));

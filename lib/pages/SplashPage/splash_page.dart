@@ -22,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
     super.didChangeDependencies();
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(seconds: 1));
-      if (_authService.user != null) {
+      if (_authService.hasUser) {
         _navigateToHome();
       } else {
         _navigateToLogin();

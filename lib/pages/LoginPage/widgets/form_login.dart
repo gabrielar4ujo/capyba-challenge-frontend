@@ -1,8 +1,8 @@
 import 'package:capyba_challenge_frontend/locales/labels.dart';
-import 'package:capyba_challenge_frontend/shared/constants/regex/regex.dart';
-import 'package:capyba_challenge_frontend/shared/constants/validators/text_validator.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
+import 'package:capyba_challenge_frontend/utils/regex/regex.dart';
+import 'package:capyba_challenge_frontend/utils/validators/text_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

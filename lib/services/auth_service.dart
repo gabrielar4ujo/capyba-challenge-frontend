@@ -15,17 +15,13 @@ class AuthService extends ChangeNotifier {
     reloadUser();
   }
 
-  User? get user => _user;
-
+  bool get hasUser => _user != null;
   bool get isLoading => _isLoading;
-
-  bool emailVerified() {
-    return user != null && user!.emailVerified;
-  }
-
-  String? get photoUrl {
-    return user != null ? user!.photoURL.toString() : null;
-  }
+  bool get emailVerified => _user != null && _user!.emailVerified;
+  String? get photoUrl => _user != null ? _user!.photoURL.toString() : null;
+  String? get email => _user != null ? _user!.email.toString() : null;
+  String? get displayName =>
+      _user != null ? _user!.displayName.toString() : null;
 
   void _getUser() {
     _user = _auth.currentUser;
@@ -39,18 +35,15 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       UserCredential result = await _auth
           .createUserWithEmailAndPassword(email: email, password: senha)
-          .timeout(const Duration(seconds: 15), onTimeout: () {
+          .timeout(const Duration(seconds: 25), onTimeout: () {
         throw FirebaseAuthException(code: 'network-error');
       });
-      User? localUser = result.user!;
+      User? localUser = result.user;
       if (localUser == null) throw FirebaseAuthException(code: "network-error");
       String? photoUrl =
           await _storageService.uploadFile(_image, localUser.uid);
-      if (photoUrl == null) {
-        throw FirebaseAuthException(code: "unknown-error");
-      }
       await localUser.updateDisplayName(_name);
-      await localUser.updatePhotoURL(photoUrl);
+      if (photoUrl != null) await localUser.updatePhotoURL(photoUrl);
       _getUser();
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
@@ -102,7 +95,7 @@ class AuthService extends ChangeNotifier {
 
   Future<void> sendEmailVerification() async {
     try {
-      await user!.sendEmailVerification();
+      await _user!.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     }
@@ -113,15 +106,15 @@ class AuthService extends ChangeNotifier {
       _isLoading = true;
       notifyListeners();
       String? photoUrl = await _storageService
-          .uploadFile(file, user!.uid)
-          .timeout(const Duration(seconds: 15), onTimeout: () {
+          .uploadFile(file, _user!.uid)
+          .timeout(const Duration(seconds: 20), onTimeout: () {
         throw FirebaseAuthException(code: 'network-error');
       });
       if (photoUrl == null) {
-        throw FirebaseServicesException("error-upload-image");
+        throw FirebaseServicesException("upload-file-error");
       }
-      await user!.updatePhotoURL(photoUrl);
-      reloadUser();
+      await _user!.updatePhotoURL(photoUrl);
+      await reloadUser();
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {
@@ -134,8 +127,8 @@ class AuthService extends ChangeNotifier {
     try {
       _isLoading = true;
       notifyListeners();
-      await user!.updateDisplayName(_newName);
-      reloadUser();
+      await _user!.updateDisplayName(_newName);
+      await reloadUser();
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {
@@ -149,8 +142,8 @@ class AuthService extends ChangeNotifier {
       await login(_oldEmail, _currentPassword);
       _isLoading = true;
       notifyListeners();
-      await user!.updateEmail(_newEmail);
-      reloadUser();
+      await _user!.updateEmail(_newEmail);
+      await reloadUser();
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {
@@ -165,8 +158,8 @@ class AuthService extends ChangeNotifier {
       await login(_currentEmail, _oldPassword);
       _isLoading = true;
       notifyListeners();
-      await user!.updatePassword(_newPassword);
-      reloadUser();
+      await _user!.updatePassword(_newPassword);
+      await reloadUser();
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {

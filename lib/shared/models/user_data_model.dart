@@ -1,4 +1,4 @@
-import 'package:capyba_challenge_frontend/shared/constants/configs/change_user_data_config.dart';
+import 'package:capyba_challenge_frontend/pages/ChangeUserDataPage/configs/change_user_data_config.dart';
 
 class UserDataModel {
   String title;

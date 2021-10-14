@@ -77,7 +77,7 @@ class _TabPageState extends State<TabPage> {
         backgroundColor: Color(AppColors.get("accentPink")),
       ),
       drawer: CustomDrawer(
-        items: sideBarOptions.sublist(0, _authService.emailVerified() ? 1 : 2),
+        items: sideBarOptions.sublist(0, _authService.emailVerified ? 1 : 2),
         onPressExit: _logOut,
         photoUrl: _authService.photoUrl,
       ),
@@ -104,18 +104,18 @@ class _TabPageState extends State<TabPage> {
           Icons.add,
           color: Color(AppColors.get('darkBlue')),
         ),
-        onPressed: _authService.emailVerified()
+        onPressed: _authService.emailVerified
             ? _navigateToCreateEvent
             : () async {
                 try {
                   await _authService.reloadUser();
-                  if (!_authService.emailVerified()) {
+                  if (!_authService.emailVerified) {
                     GlobalSnackbar.showMessage(
                         context, Labels.get("checkYourEmailToCreateEvent"));
                   } else {
                     _navigateToCreateEvent();
                   }
-                } on FirebaseServicesException catch (e) {
+                } catch (e) {
                   GlobalSnackbar.showMessage(
                       context, Labels.get("checkYourEmailToCreateEvent"));
                 }

@@ -23,7 +23,7 @@ class _RestrictedPageState extends State<RestrictedPage> {
     Future _reloadUser() async {
       try {
         await _authService.reloadUser();
-        if (_authService.emailVerified()) {
+        if (_authService.emailVerified) {
           GlobalSnackbar.showMessage(
               context, Labels.get("emailHasBeenVerified"));
         } else {
@@ -35,7 +35,7 @@ class _RestrictedPageState extends State<RestrictedPage> {
       }
     }
 
-    return _authService.emailVerified()
+    return _authService.emailVerified
         ? CustomStreamBuilder(
             service: _eventService.getPrivateEvents,
           )

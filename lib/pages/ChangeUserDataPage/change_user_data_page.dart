@@ -1,13 +1,15 @@
 import 'package:capyba_challenge_frontend/locales/labels.dart';
+import 'package:capyba_challenge_frontend/pages/ChangeUserDataPage/configs/change_user_data_config.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
-import 'package:capyba_challenge_frontend/shared/constants/configs/change_user_data_config.dart';
-import 'package:capyba_challenge_frontend/shared/constants/regex/regex.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
+import 'package:capyba_challenge_frontend/shared/models/change_user_data_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
 import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
+import 'package:capyba_challenge_frontend/utils/regex/regex.dart';
+import 'package:capyba_challenge_frontend/utils/validators/text_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -31,11 +33,12 @@ class _ChangeUserDataPageState extends State<ChangeUserDataPage> {
   @override
   Widget build(BuildContext context) {
     final AuthService _authService = Provider.of<AuthService>(context);
-    final ChangeUserDataConfig _changeUserDataConfig =
-        ChangeUserDataConfig(widget.config);
     Future<bool> _willPopCallback() async {
       return Future.value(!_authService.isLoading);
     }
+
+    ChangeUserDataModel _changeUserDataModel =
+        ChangeUserDataConfig(widget.config).getConfig();
 
     return WillPopScope(
       onWillPop: _willPopCallback,
@@ -44,7 +47,7 @@ class _ChangeUserDataPageState extends State<ChangeUserDataPage> {
         appBar: AppBar(
           backgroundColor: Color(AppColors.get("darkBlue")),
           title: Text(
-            _changeUserDataConfig.getConfig().appBarTitle,
+            _changeUserDataModel.appBarTitle,
           ),
         ),
         body: SingleChildScrollView(
@@ -67,11 +70,11 @@ class _ChangeUserDataPageState extends State<ChangeUserDataPage> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      _changeUserDataConfig.getConfig().requireReAuthenticate ==
-                              true
+                      _changeUserDataModel.requireReAuthenticate == true
                           ? Column(
                               children: [
                                 InputText(
+                                    validator: TextValidator().emailIsValid,
                                     disableInput: _authService.isLoading,
                                     formatter: [
                                       FilteringTextInputFormatter.allow(
@@ -81,6 +84,7 @@ class _ChangeUserDataPageState extends State<ChangeUserDataPage> {
                                     title: Labels.get("currentEmail"),
                                     onSaved: setCurrentEmail),
                                 InputText(
+                                    validator: TextValidator().textIsNotEmpty,
                                     hiddenText: true,
                                     disableInput: _authService.isLoading,
                                     horizontalPadding: 0,
@@ -90,24 +94,20 @@ class _ChangeUserDataPageState extends State<ChangeUserDataPage> {
                             )
                           : Container(),
                       InputText(
+                          validator: _changeUserDataModel.textValidator,
                           formatter: [
-                            _changeUserDataConfig.getConfig().regex != null
+                            _changeUserDataModel.regex != null
                                 ? FilteringTextInputFormatter.allow(RegExp(
-                                    _changeUserDataConfig
-                                        .getConfig()
-                                        .regex
-                                        .toString()))
+                                    _changeUserDataModel.regex.toString()))
                                 : FilteringTextInputFormatter
                                     .singleLineFormatter
                           ],
-                          hiddenText:
-                              _changeUserDataConfig.getConfig().hiddenText!,
-                          capitalization: _changeUserDataConfig
-                              .getConfig()
-                              .textCapitalization,
+                          hiddenText: _changeUserDataModel.hiddenText!,
+                          capitalization:
+                              _changeUserDataModel.textCapitalization,
                           disableInput: _authService.isLoading,
                           horizontalPadding: 0,
-                          title: _changeUserDataConfig.getConfig().optionTitle,
+                          title: _changeUserDataModel.optionTitle,
                           onSaved: setField),
                     ],
                   ),
@@ -119,10 +119,10 @@ class _ChangeUserDataPageState extends State<ChangeUserDataPage> {
                   loadingButton: _authService.isLoading,
                   text: Labels.get("saveEditions"),
                   onPressed: () async {
-                    _formKey.currentState!.save();
                     try {
-                      _changeUserDataConfig.getConfig().requireReAuthenticate ==
-                              true
+                      _formKey.currentState!.save();
+                      if (!_formKey.currentState!.validate()) return;
+                      _changeUserDataModel.requireReAuthenticate == true
                           ? await widget.handleFunction(
                               _newField, _currentEmail, _currentPassword)
                           : await widget.handleFunction(_newField);

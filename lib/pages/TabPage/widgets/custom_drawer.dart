@@ -70,11 +70,4 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
-
-  Widget _optionTile(text) {
-    return Text(
-      text,
-      style: TextStyle(color: Color(AppColors.get("lightGray")), fontSize: 17),
-    );
-  }
 }
