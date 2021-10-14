@@ -1,8 +1,10 @@
 import 'package:capyba_challenge_frontend/locales/labels.dart';
+import 'package:capyba_challenge_frontend/shared/constants/regex/regex.dart';
 import 'package:capyba_challenge_frontend/shared/constants/validators/text_validator.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FormLogin extends StatefulWidget {
   final Function(String, String) handleSubmit;
@@ -33,6 +35,9 @@ class _FormLoginState extends State<FormLogin> {
             onSaved: _setEmail,
             validator: _textValidator.emailIsValid,
             disableInput: widget.disableForm,
+            formatter: [
+              FilteringTextInputFormatter.allow(RegExp(Regex().emailRegex)),
+            ],
           ),
           const Divider(
             color: Colors.transparent,

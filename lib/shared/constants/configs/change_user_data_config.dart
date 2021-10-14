@@ -17,27 +17,21 @@ class ChangeUserDataConfig {
     switch (config) {
       case EnumChangeUserDataConfig.changeName:
         return ChangeUserDataModel(
-            appBarTitle: "nome",
-            header: "Digite um novo nome",
-            optionTitle: "Nome");
+            appBarTitle: "Alterar nome", optionTitle: "Nome");
       case EnumChangeUserDataConfig.changeEmail:
         return ChangeUserDataModel(
-            appBarTitle: "email",
-            header: "Digite um novo email",
+            appBarTitle: "Alterar email",
             optionTitle: "Novo email",
             regex: Regex().emailRegex,
             requireReAuthenticate: true);
       case EnumChangeUserDataConfig.changePassword:
         return ChangeUserDataModel(
-            appBarTitle: "senha",
-            header: "Digite uma nova senha",
+            appBarTitle: "Alterar senha",
             optionTitle: "Nova senha",
             requireReAuthenticate: true);
       case EnumChangeUserDataConfig.changePhoto:
         return ChangeUserDataModel(
-            appBarTitle: "foto",
-            header: "Tire uma nova foto",
-            optionTitle: "Foto");
+            appBarTitle: "Alterar foto", optionTitle: "Foto");
     }
   }
 }

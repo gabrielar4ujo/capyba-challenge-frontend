@@ -1,3 +1,5 @@
 class Regex {
-  final String emailRegex = "[0-9a-zA-Z-@.]";
+  final String _emailRegex = "[0-9a-zA-Z-@.]";
+
+  String get emailRegex => _emailRegex;
 }

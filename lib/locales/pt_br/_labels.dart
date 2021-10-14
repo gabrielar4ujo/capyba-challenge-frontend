@@ -1,5 +1,8 @@
 const labels = {
   "appName": "EventApp",
+  "name": "Nome",
+  "photo": "Foto",
+  "obscurePassword": "********",
   "email": "Email",
   "password": "Senha",
   "login": "Login",
@@ -15,4 +18,14 @@ const labels = {
   "mandatoryPicture": "Foto é obrigatória!",
   "mandatoryPrivacyPolicy": "É preciso aceitar os termos de privacidade!",
   "takeYourPicture": "Deixe-nos ver quem é você!\nAdicione uma foto sua.*",
+  "fillTheFields": "Preencha o(s) campo(s) abaixo",
+  "currentEmail": "Atual email",
+  "currentPassword": "Atual senha",
+  "saveEditions": "Salvar alterações",
+  "takeNewPhoto": "Tire uma nova foto",
+  "seeYourPhoto": "Vá em alterar e veja sua foto",
+  "personalData": "Dados pessoais",
+  "verificationEmailSent": "Email de verificação enviado!",
+  "publicEvents": "Eventos\nPúblicos",
+  "privateEvents": "Eventos\nPrivados"
 };

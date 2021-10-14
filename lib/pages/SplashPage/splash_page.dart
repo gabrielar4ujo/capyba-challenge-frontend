@@ -47,7 +47,7 @@ class _SplashPageState extends State<SplashPage> {
           child: Text(
             Labels.get("appName"),
             style: TextStyle(
-                color: Color(AppColors.get("white92")),
+                color: Color(AppColors.get("lightGray")),
                 fontSize: 45,
                 fontWeight: FontWeight.bold),
           ),

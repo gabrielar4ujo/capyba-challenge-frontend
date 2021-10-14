@@ -25,8 +25,8 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
           padding: const EdgeInsets.all(16.0),
           child: Text(
             Labels.get("terms"),
-            style:
-                TextStyle(color: Color(AppColors.get("white92")), fontSize: 16),
+            style: TextStyle(
+                color: Color(AppColors.get("lightGray")), fontSize: 16),
           ),
         ),
       ),

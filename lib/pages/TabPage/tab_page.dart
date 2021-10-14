@@ -1,10 +1,13 @@
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/LoginPage/login_page.dart';
 import 'package:capyba_challenge_frontend/pages/ProfilePage/profile_page.dart';
 import 'package:capyba_challenge_frontend/pages/TabPage/widgets/custom_drawer.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
+import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_header.dart';
+import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,21 +36,22 @@ class _TabPageState extends State<TabPage> {
     AuthService _authService = Provider.of<AuthService>(context);
     final sideBarOptions = [
       {
-        "name": "Meu perfil",
+        "name": Labels.get("myProfile"),
         "onPress": () {
           _scaffoldkey.currentState!.openEndDrawer();
           _navigateToRegister();
         }
       },
       {
-        "name": "Validar email",
+        "name": Labels.get("validateEmail"),
         "onPress": () async {
           try {
             await _authService.sendEmailVerification();
+            GlobalSnackbar.buildErrorSnackbar(
+                context, Labels.get("verificationEmailSent"));
+          } on AuthException catch (e) {
             _scaffoldkey.currentState!.openEndDrawer();
-            _showSnackBar("Email de verificação enviado!");
-          } catch (e) {
-            _showSnackBar("error");
+            GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
           }
         }
       }
@@ -68,8 +72,8 @@ class _TabPageState extends State<TabPage> {
             onPressed: () async {
               try {
                 await _authService.reloadUser();
-              } catch (e) {
-                print(e);
+              } on AuthException catch (e) {
+                GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
               }
             },
             text: "Já validei meu email",
@@ -98,7 +102,9 @@ class _TabPageState extends State<TabPage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           CustomHeader(
-            title: "Eventos",
+            title: _selectedIndex == 0
+                ? Labels.get("publicEvents")
+                : Labels.get("privateEvents"),
             leftIcon: const Icon(Icons.menu),
             onPress: () => _scaffoldkey.currentState!.openDrawer(),
           ),
@@ -109,34 +115,30 @@ class _TabPageState extends State<TabPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(AppColors.get('white92')),
-        child: Icon(
-          Icons.add,
-          color: Color(AppColors.get('darkBlue')),
-        ),
-        onPressed: () async {
-          // await _authService.reloadUser();
-          // print(_authService.user!.emailVerified);
-          // await _authService.logout();
-          // Navigator.pushReplacement(context,
-          //     MaterialPageRoute(builder: (context) => const LoginPage()));
-        },
-      ),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+              backgroundColor: Color(AppColors.get('lightGray')),
+              child: Icon(
+                Icons.add,
+                color: Color(AppColors.get('darkBlue')),
+              ),
+              onPressed: () async {},
+            )
+          : Container(),
       backgroundColor: Color(AppColors.get("accentPink")),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(AppColors.get("darkBlue")),
-        unselectedItemColor: Color(AppColors.get("white92")),
-        items: const <BottomNavigationBarItem>[
+        unselectedItemColor: Color(AppColors.get("lightGray")),
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            activeIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
+            activeIcon: const Icon(Icons.home),
+            icon: const Icon(Icons.home_outlined),
+            label: Labels.get("home"),
           ),
           BottomNavigationBarItem(
-            activeIcon: Icon(Icons.lock),
-            icon: Icon(Icons.lock_outline),
-            label: 'Restrito',
+            activeIcon: const Icon(Icons.lock),
+            icon: const Icon(Icons.lock_outline),
+            label: Labels.get("restricted"),
           ),
         ],
         currentIndex: _selectedIndex,
@@ -144,10 +146,6 @@ class _TabPageState extends State<TabPage> {
         onTap: _onItemTapped,
       ),
     );
-  }
-
-  void _showSnackBar(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 
   void _navigateToRegister() {

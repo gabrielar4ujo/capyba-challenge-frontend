@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/models/user_data_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
@@ -19,6 +20,7 @@ class CustomTile extends StatelessWidget {
                 : "",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Color(AppColors.get("lightGray"))),
           ),
           trailing: InkWell(
             child: Container(
@@ -27,9 +29,14 @@ class CustomTile extends StatelessWidget {
                 child: InkWell(
                   onTap: userDataModel.navigate,
                   child: Row(
-                    children: const [
-                      Text("Alterar"),
-                      Icon(Icons.keyboard_arrow_right)
+                    children: [
+                      Text(
+                        Labels.get("change"),
+                        style:
+                            TextStyle(color: Color(AppColors.get('darkBlue'))),
+                      ),
+                      Icon(Icons.keyboard_arrow_right,
+                          color: Color(AppColors.get('darkBlue')))
                     ],
                   ),
                 )),
@@ -37,7 +44,10 @@ class CustomTile extends StatelessWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(userDataModel.title),
+              Text(
+                userDataModel.title,
+                style: TextStyle(color: Color(AppColors.get('darkBlue'))),
+              ),
               userDataModel.photo != null
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
+      width: MediaQuery.of(context).size.width * 0.5,
       child: Drawer(
         child: Container(
           color: Color(AppColors.get("accentPink")),
@@ -48,12 +49,12 @@ class CustomDrawer extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: CustomButton(
-                    text: 'Sair da conta',
+                    text: Labels.get("logout"),
                     onPressed: onPressExit,
                     size:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                     fontSize: 15,
-                    borderColor: "white92",
+                    borderColor: "lightGray",
                   ),
                 ),
               ),
@@ -67,7 +68,7 @@ class CustomDrawer extends StatelessWidget {
   Widget _optionTile(text) {
     return Text(
       text,
-      style: TextStyle(color: Color(AppColors.get("white92"))),
+      style: TextStyle(color: Color(AppColors.get("lightGray"))),
     );
   }
 }

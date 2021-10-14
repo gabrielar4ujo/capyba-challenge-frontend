@@ -4,9 +4,11 @@ import 'package:capyba_challenge_frontend/pages/RegisterPage/register_page.dart'
 import 'package:capyba_challenge_frontend/pages/TabPage/tab_page.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
+import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_header.dart';
+import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,8 +30,8 @@ class _LoginPageState extends State<LoginPage> {
       try {
         await _authService.login(email, password);
         _navigateToTab();
-      } catch (e) {
-        _showSnackBar(Labels.get("errorLogin"));
+      } on AuthException catch (e) {
+        GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
       }
     }
 
@@ -61,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               width: _width,
               height: 30,
-              color: Color(AppColors.get("white92")),
+              color: Color(AppColors.get("lightGray")),
             ),
             ConstrainedBox(
               constraints: const BoxConstraints(
@@ -78,7 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       Labels.get("notRegisteredYet"),
                       style: TextStyle(
-                          fontSize: 16, color: Color(AppColors.get("white92"))),
+                          fontSize: 16,
+                          color: Color(AppColors.get("lightGray"))),
                     ),
                     const CustomDivider(
                       height: 15,
@@ -106,9 +109,5 @@ class _LoginPageState extends State<LoginPage> {
   void _navigateToTab() {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const TabPage()));
-  }
-
-  void _showSnackBar(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 }

@@ -3,11 +3,14 @@ import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/PrivacyPolicyPage/privacy_policy_page.dart';
 import 'package:capyba_challenge_frontend/shared/camera/camera.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
+import 'package:capyba_challenge_frontend/shared/constants/regex/regex.dart';
 import 'package:capyba_challenge_frontend/shared/constants/validators/text_validator.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
+import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FormRegister extends StatefulWidget {
   final Function(String, String, File, String) handleSubmit;
@@ -38,6 +41,7 @@ class _FormRegisterState extends State<FormRegister> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InputText(
+            capitalization: true,
             title: Labels.get("mandatoryName"),
             color: Color(AppColors.get("accentPink")),
             horizontalPadding: 0,
@@ -68,7 +72,8 @@ class _FormRegisterState extends State<FormRegister> {
                               await _imagePicker.takePicture();
                               setState(() {});
                             } catch (e) {
-                              _showSnackBar(Labels.get("errorCamera"));
+                              GlobalSnackbar.buildErrorSnackbar(
+                                  context, Labels.get("errorCamera"));
                             }
                           },
                     child: Container(
@@ -88,6 +93,9 @@ class _FormRegisterState extends State<FormRegister> {
           const CustomDivider(),
           InputText(
             title: Labels.get("mandatoryEmail"),
+            formatter: [
+              FilteringTextInputFormatter.allow(RegExp(Regex().emailRegex)),
+            ],
             color: Color(AppColors.get("accentPink")),
             horizontalPadding: 0,
             onSaved: _setEmail,
@@ -105,15 +113,6 @@ class _FormRegisterState extends State<FormRegister> {
             disableInput: widget.disableForm,
           ),
           const CustomDivider(),
-          // InputText(
-          //   title: "Confirmar senha*",
-          //   color: Color(AppColors.get("accentPink")),
-          //   horizontalPadding: 0,
-          //   hiddenText: true,
-          //   onSaved: _setConfirmPassword,
-          //  disableInput: widget.disableForm,
-          // ),
-          // const CustomDivider(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -156,19 +155,18 @@ class _FormRegisterState extends State<FormRegister> {
                 _formKey.currentState!.save();
                 if (_formKey.currentState!.validate()) {
                   if (_imagePicker.image == null) {
-                    _showSnackBar(Labels.get("mandatoryPicture"));
+                    GlobalSnackbar.buildErrorSnackbar(
+                        context, Labels.get("mandatoryPicture"));
                     return;
                   }
                   if (!_checkStatus!) {
-                    _showSnackBar(Labels.get("mandatoryPrivacyPolicy"));
+                    GlobalSnackbar.buildErrorSnackbar(
+                        context, Labels.get("mandatoryPrivacyPolicy"));
                     return;
                   }
-                  try {
-                    await widget.handleSubmit(_email, _password,
-                        File(_imagePicker.image!.path), _name);
-                  } catch (e) {
-                    _showSnackBar(Labels.get("errorSignUp"));
-                  }
+
+                  await widget.handleSubmit(
+                      _email, _password, File(_imagePicker.image!.path), _name);
                 }
               },
               text: Labels.get("pressRegister"),
@@ -193,16 +191,8 @@ class _FormRegisterState extends State<FormRegister> {
     _password = text;
   }
 
-  // void _setConfirmPassword(text) {
-  //   _confirmPassword = text;
-  // }
-
   void _navigateToPrivacyPolicy() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const PrivacyPolicyPage()));
-  }
-
-  void _showSnackBar(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 }
