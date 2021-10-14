@@ -1,6 +1,6 @@
 import 'package:capyba_challenge_frontend/locales/labels.dart';
-import 'package:capyba_challenge_frontend/pages/HomePage/home_page.dart';
 import 'package:capyba_challenge_frontend/pages/LoginPage/login_page.dart';
+import 'package:capyba_challenge_frontend/pages/TabPage/tab_page.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +47,7 @@ class _SplashPageState extends State<SplashPage> {
           child: Text(
             Labels.get("appName"),
             style: TextStyle(
-                color: Color(AppColors.get("white92")),
+                color: Color(AppColors.get("lightGray")),
                 fontSize: 45,
                 fontWeight: FontWeight.bold),
           ),
@@ -58,7 +58,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void _navigateToHome() {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
+        context, MaterialPageRoute(builder: (context) => const TabPage()));
   }
 
   void _navigateToLogin() {

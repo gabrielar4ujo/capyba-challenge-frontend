@@ -16,7 +16,7 @@ class CustomButton extends StatelessWidget {
       required this.onPressed,
       required this.text,
       this.fontSize = 18,
-      this.borderColor = "mediumBlack",
+      this.borderColor = "darkBlue",
       this.backgroundColor = "accentPink",
       this.disableButton = false,
       this.loadingButton = false,
@@ -37,7 +37,7 @@ class CustomButton extends StatelessWidget {
         child: loadingButton
             ? SizedBox(
                 child: CircularProgressIndicator(
-                  color: Color(AppColors.get("white92")),
+                  color: Color(AppColors.get("lightGray")),
                 ),
                 height: 21,
                 width: 21,

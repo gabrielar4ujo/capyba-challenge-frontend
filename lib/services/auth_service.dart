@@ -1,76 +1,159 @@
+import 'package:capyba_challenge_frontend/services/storage_service.dart';
+import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-class AuthException implements Exception {
-  String message;
-  AuthException(this.message);
-}
+import 'dart:io';
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user;
+  final StorageService _storageService = StorageService();
+  User? _user;
   bool isLoading = false;
 
   AuthService() {
-    _authCheck();
     _getUser();
   }
 
-  _authCheck() {
-    _auth.authStateChanges().listen((User? user) {
-      user = (user == null) ? null : user;
-      notifyListeners();
-    });
+  User? get user => _user;
+
+  bool emailVerified() {
+    return user != null && user!.emailVerified;
   }
 
-  _getUser() {
-    user = _auth.currentUser;
+  void _getUser() {
+    _user = _auth.currentUser;
     notifyListeners();
   }
 
-  signUp(String email, String senha, String _image, String _name) async {
+  Future<void> signUp(
+      String email, String senha, File _image, String _name) async {
     try {
       isLoading = true;
       notifyListeners();
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: senha);
-      User localUser = result.user!;
+      User? localUser = result.user!;
+      if (localUser == null) throw FirebaseAuthException(code: "Network-error");
+      String? photoUrl =
+          await _storageService.uploadFile(_image, localUser.uid);
+      if (photoUrl == null) {
+        throw FirebaseAuthException(code: "unknown-error");
+      }
       await localUser.updateDisplayName(_name);
-      await localUser.updatePhotoURL(_image);
+      await localUser.updatePhotoURL(photoUrl);
       _getUser();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        throw AuthException('A senha é muito fraca!');
-      } else if (e.code == 'email-already-in-use') {
-        throw AuthException('Este email já está cadastrado');
-      }
+      throw AuthException(e.code);
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 
-  login(String email, String senha) async {
+  Future<void> login(String email, String senha) async {
     try {
       isLoading = true;
       notifyListeners();
-      await _auth.signInWithEmailAndPassword(email: email, password: senha);
+      UserCredential result =
+          await _auth.signInWithEmailAndPassword(email: email, password: senha);
+      if (result.user == null) {
+        throw FirebaseAuthException(code: "Network-error");
+      }
       _getUser();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        throw AuthException('Email não encontrado. Cadastre-se.');
-      } else if (e.code == 'wrong-password') {
-        throw AuthException('Senha incorreta. Tente novamente');
-      }
-      return false;
+      throw AuthException(e.code);
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 
-  logout() async {
-    await _auth.signOut();
-    _getUser();
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+      _getUser();
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(e.code);
+    }
+  }
+
+  Future<void> reloadUser() async {
+    try {
+      await _auth.currentUser!.reload();
+      _getUser();
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(e.code);
+    }
+  }
+
+  Future<void> sendEmailVerification() async {
+    try {
+      await user!.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(e.code);
+    }
+  }
+
+  Future<void> updatePhotoURL(File? file) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      String? photoUrl = await _storageService.uploadFile(file, user!.uid);
+      if (photoUrl == null) {
+        throw AuthException("error-upload-image");
+      }
+      await user!.updatePhotoURL(photoUrl);
+      reloadUser();
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(e.code);
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> changeUserName(_newName) async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      await user!.updateDisplayName(_newName);
+      reloadUser();
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(e.code);
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> changeUserEmail(_newEmail, _oldEmail, _currentPassword) async {
+    try {
+      await login(_oldEmail, _currentPassword);
+      isLoading = true;
+      notifyListeners();
+      await user!.updateEmail(_newEmail);
+      reloadUser();
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(e.code);
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> changeUserPassword(
+      _newPassword, _currentEmail, _oldPassword) async {
+    try {
+      await login(_currentEmail, _oldPassword);
+      isLoading = true;
+      notifyListeners();
+      await user!.updatePassword(_newPassword);
+      reloadUser();
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(e.code);
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }
