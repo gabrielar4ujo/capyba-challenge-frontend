@@ -1,6 +1,9 @@
 import 'package:capyba_challenge_frontend/locales/labels.dart';
+import 'package:capyba_challenge_frontend/pages/CreateEventPage/create_event_page.dart';
+import 'package:capyba_challenge_frontend/pages/HomePage/home_page.dart';
 import 'package:capyba_challenge_frontend/pages/LoginPage/login_page.dart';
 import 'package:capyba_challenge_frontend/pages/ProfilePage/profile_page.dart';
+import 'package:capyba_challenge_frontend/pages/RestrictedPage/restricted_page.dart';
 import 'package:capyba_challenge_frontend/pages/TabPage/widgets/custom_drawer.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
@@ -50,36 +53,16 @@ class _TabPageState extends State<TabPage> {
             GlobalSnackbar.buildErrorSnackbar(
                 context, Labels.get("verificationEmailSent"));
           } on AuthException catch (e) {
-            _scaffoldkey.currentState!.openEndDrawer();
             GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
+          } finally {
+            _scaffoldkey.currentState!.openEndDrawer();
           }
         }
       }
     ];
     final List<Widget> _widgetOptions = <Widget>[
-      Text(
-        'Home: Aberto',
-        style: optionStyle,
-      ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Restrito: Está restrito? R: ${_authService.emailVerified() ? 'Não' : 'Sim'}',
-            style: optionStyle,
-          ),
-          CustomButton(
-            onPressed: () async {
-              try {
-                await _authService.reloadUser();
-              } on AuthException catch (e) {
-                GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
-              }
-            },
-            text: "Já validei meu email",
-          )
-        ],
-      ),
+      const HomePage(),
+      const RestrictedPage()
     ];
 
     void _logOut() async {
@@ -115,16 +98,19 @@ class _TabPageState extends State<TabPage> {
           ),
         ],
       ),
-      floatingActionButton: _selectedIndex == 0
-          ? FloatingActionButton(
-              backgroundColor: Color(AppColors.get('lightGray')),
-              child: Icon(
-                Icons.add,
-                color: Color(AppColors.get('darkBlue')),
-              ),
-              onPressed: () async {},
-            )
-          : Container(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(AppColors.get('lightGray')),
+        child: Icon(
+          Icons.add,
+          color: Color(AppColors.get('darkBlue')),
+        ),
+        onPressed: _authService.user!.emailVerified
+            ? _navigateToCreateEvent
+            : () {
+                GlobalSnackbar.buildErrorSnackbar(
+                    context, "Verifique seu email para criar um evento!");
+              },
+      ),
       backgroundColor: Color(AppColors.get("accentPink")),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(AppColors.get("darkBlue")),
@@ -151,5 +137,10 @@ class _TabPageState extends State<TabPage> {
   void _navigateToRegister() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+  }
+
+  void _navigateToCreateEvent() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const CreateEventPage()));
   }
 }

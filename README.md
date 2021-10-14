@@ -38,3 +38,4 @@ TODO:
   [X] Adicionar melhores feedbacks quando ocorrer erro ao logar e registrar
   [X] Revisar serviço de login (in progress)
   [] Revisar estrutura do projeto (in progress)
+  [] Criar model de user
