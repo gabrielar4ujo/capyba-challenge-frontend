@@ -6,7 +6,7 @@ import 'package:capyba_challenge_frontend/shared/constants/regex/regex.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
+import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -128,8 +128,7 @@ class _ChangeUserDataPageState extends State<ChangeUserDataPage> {
                           : await widget.handleFunction(_newField);
                       Navigator.of(context).pop();
                     } on FirebaseServicesException catch (e) {
-                      GlobalSnackbar.buildErrorSnackbar(
-                          context, Labels.get(e.code));
+                      GlobalSnackbar.showMessage(context, Labels.get(e.code));
                     }
                   },
                   size: const EdgeInsets.symmetric(horizontal: 10),

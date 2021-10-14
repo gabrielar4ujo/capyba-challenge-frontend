@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/models/event_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
@@ -13,7 +14,7 @@ class CustomList extends StatelessWidget {
     return docs.isEmpty
         ? Center(
             child: Text(
-              "Sem eventos para listar :(",
+              Labels.get("noEventToList"),
               style: TextStyle(
                   fontSize: 18, color: Color(AppColors.get("darkBlue"))),
             ),

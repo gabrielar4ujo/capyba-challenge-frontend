@@ -6,7 +6,7 @@ import 'package:capyba_challenge_frontend/pages/TabPage/tab_page.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
+import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
         await _authService.signUp(email, senha, _image, _name);
         _navigateToHomePage();
       } on FirebaseServicesException catch (e) {
-        GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
+        GlobalSnackbar.showMessage(context, Labels.get(e.code));
       }
     }
 

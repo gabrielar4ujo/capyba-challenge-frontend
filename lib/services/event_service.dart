@@ -15,7 +15,8 @@ class EventService extends ChangeNotifier {
       "eventName": _name,
       "public": _public,
       "about": _about,
-      "owner": _owner
+      "owner": _owner,
+      "createdAt": FieldValue.serverTimestamp()
     });
   }
 
@@ -24,7 +25,8 @@ class EventService extends ChangeNotifier {
       "eventName": _name,
       "public": _public,
       "about": _about,
-      "owner": _owner
+      "owner": _owner,
+      "createdAt": FieldValue.serverTimestamp()
     });
   }
 
@@ -48,10 +50,16 @@ class EventService extends ChangeNotifier {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getPublicEvents() {
-    return _collectionReference.collection("home").snapshots();
+    return _collectionReference
+        .collection("home")
+        .orderBy('createdAt', descending: true)
+        .snapshots();
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getPrivateEvents() {
-    return _collectionReference.collection("restricted").snapshots();
+    return _collectionReference
+        .collection("restricted")
+        .orderBy('createdAt', descending: true)
+        .snapshots();
   }
 }

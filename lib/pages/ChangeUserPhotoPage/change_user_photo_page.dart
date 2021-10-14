@@ -8,7 +8,7 @@ import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dar
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_fade_image.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
+import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,8 +50,7 @@ class _ChangeUserPhotoPageState extends State<ChangeUserPhotoPage> {
                         await widget.handleService(File(_camera.image!.path));
                         Navigator.of(context).pop();
                       } on FirebaseServicesException catch (e) {
-                        GlobalSnackbar.buildErrorSnackbar(
-                            context, Labels.get(e.code));
+                        GlobalSnackbar.showMessage(context, Labels.get(e.code));
                       }
                     }
                   : null,
@@ -80,8 +79,7 @@ class _ChangeUserPhotoPageState extends State<ChangeUserPhotoPage> {
                   height: photoSize,
                   child: ClipOval(
                     child: _camera.image == null
-                        ? CustomFadeImage(
-                            url: _authService.user!.photoURL.toString())
+                        ? CustomFadeImage(url: _authService.photoUrl.toString())
                         : Image.file(
                             File(_camera.image!.path),
                             fit: BoxFit.cover,

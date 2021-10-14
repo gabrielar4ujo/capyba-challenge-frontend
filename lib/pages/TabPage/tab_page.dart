@@ -9,7 +9,7 @@ import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_header.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
+import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,10 +49,10 @@ class _TabPageState extends State<TabPage> {
         "onPress": () async {
           try {
             await _authService.sendEmailVerification();
-            GlobalSnackbar.buildErrorSnackbar(
+            GlobalSnackbar.showMessage(
                 context, Labels.get("verificationEmailSent"));
           } on FirebaseServicesException catch (e) {
-            GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
+            GlobalSnackbar.showMessage(context, Labels.get(e.code));
           } finally {
             _scaffoldkey.currentState!.openEndDrawer();
           }
@@ -79,7 +79,7 @@ class _TabPageState extends State<TabPage> {
       drawer: CustomDrawer(
         items: sideBarOptions.sublist(0, _authService.emailVerified() ? 1 : 2),
         onPressExit: _logOut,
-        photoUrl: _authService.user!.photoURL.toString(),
+        photoUrl: _authService.photoUrl,
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -110,14 +110,14 @@ class _TabPageState extends State<TabPage> {
                 try {
                   await _authService.reloadUser();
                   if (!_authService.emailVerified()) {
-                    GlobalSnackbar.buildErrorSnackbar(
-                        context, "Verifique seu email para criar um evento!");
+                    GlobalSnackbar.showMessage(
+                        context, Labels.get("checkYourEmailToCreateEvent"));
                   } else {
                     _navigateToCreateEvent();
                   }
                 } on FirebaseServicesException catch (e) {
-                  GlobalSnackbar.buildErrorSnackbar(
-                      context, "Verifique seu email para criar um evento!");
+                  GlobalSnackbar.showMessage(
+                      context, Labels.get("checkYourEmailToCreateEvent"));
                 }
               },
       ),

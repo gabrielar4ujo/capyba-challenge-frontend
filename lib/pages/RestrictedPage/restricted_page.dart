@@ -4,7 +4,7 @@ import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/services/event_service.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_stream_builder.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
+import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,14 +24,14 @@ class _RestrictedPageState extends State<RestrictedPage> {
       try {
         await _authService.reloadUser();
         if (_authService.emailVerified()) {
-          GlobalSnackbar.buildErrorSnackbar(
-              context, "Email foi verificado com sucesso!");
+          GlobalSnackbar.showMessage(
+              context, Labels.get("emailHasBeenVerified"));
         } else {
-          GlobalSnackbar.buildErrorSnackbar(
-              context, "Email ainda não verificado!");
+          GlobalSnackbar.showMessage(
+              context, Labels.get("emailNotYetVerified"));
         }
       } on FirebaseServicesException catch (e) {
-        GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
+        GlobalSnackbar.showMessage(context, Labels.get(e.code));
       }
     }
 
@@ -39,8 +39,10 @@ class _RestrictedPageState extends State<RestrictedPage> {
         ? CustomStreamBuilder(
             service: _eventService.getPrivateEvents,
           )
-        : RestrictedMessage(
-            reloadUser: _reloadUser,
+        : SingleChildScrollView(
+            child: RestrictedMessage(
+              reloadUser: _reloadUser,
+            ),
           );
   }
 }

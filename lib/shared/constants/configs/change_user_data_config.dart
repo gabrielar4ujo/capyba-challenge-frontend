@@ -10,6 +10,7 @@ enum EnumChangeUserDataConfig {
 }
 
 class ChangeUserDataConfig {
+  final Regex _regex = Regex();
   EnumChangeUserDataConfig config;
 
   ChangeUserDataConfig(this.config);
@@ -25,7 +26,7 @@ class ChangeUserDataConfig {
         return ChangeUserDataModel(
             appBarTitle: "Alterar email",
             optionTitle: "Novo email",
-            regex: Regex().emailRegex,
+            regex: _regex.emailRegex,
             requireReAuthenticate: true);
       case EnumChangeUserDataConfig.changePassword:
         return ChangeUserDataModel(

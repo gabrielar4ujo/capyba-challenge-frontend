@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
@@ -11,7 +12,7 @@ class RestrictedMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -22,14 +23,14 @@ class RestrictedMessage extends StatelessWidget {
           ),
           const CustomDivider(),
           Text(
-            'Está área é restrita para os emails que ainda não foram verificados.\nAcesse o menu lateral e valide seu email!',
+            Labels.get("areaIsRestricted"),
             textAlign: TextAlign.center,
             style: TextStyle(color: Color(AppColors.get("darkBlue"))),
           ),
           const CustomDivider(),
           CustomButton(
             onPressed: reloadUser,
-            text: "Já validei meu email",
+            text: Labels.get("validatedMyEmail"),
           )
         ],
       ),

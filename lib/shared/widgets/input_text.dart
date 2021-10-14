@@ -28,6 +28,9 @@ class InputText extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var border = maxLines! == 1
+        ? UnderlineInputBorder(borderSide: BorderSide(color: color))
+        : OutlineInputBorder(borderSide: BorderSide(color: color));
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: TextFormField(
@@ -48,12 +51,10 @@ class InputText extends StatelessWidget {
           errorStyle: const TextStyle(height: 1, color: Colors.white70),
           labelText: title,
           labelStyle: TextStyle(color: color),
-          enabledBorder: maxLines! == 1
-              ? UnderlineInputBorder(borderSide: BorderSide(color: color))
-              : OutlineInputBorder(borderSide: BorderSide(color: color)),
-          focusedBorder: maxLines! == 1
-              ? UnderlineInputBorder(borderSide: BorderSide(color: color))
-              : OutlineInputBorder(borderSide: BorderSide(color: color)),
+          enabledBorder: border,
+          focusedBorder: border,
+          errorBorder: border,
+          border: border,
         ),
       ),
     );

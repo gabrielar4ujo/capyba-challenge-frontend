@@ -9,4 +9,6 @@ const pressables = {
   "restricted": "Restrito",
   "logout": "Sair da conta",
   "change": "Alterar",
+  "validatedMyEmail": "Já validei meu email",
+  "createEvent": "Criar evento",
 };

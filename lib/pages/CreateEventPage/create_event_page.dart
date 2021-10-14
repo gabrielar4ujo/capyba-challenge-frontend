@@ -2,10 +2,11 @@ import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/services/event_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
+import 'package:capyba_challenge_frontend/shared/constants/validators/text_validator.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
+import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     final EventService _eventService = Provider.of<EventService>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cadastre seu evento"),
+        title: Text(Labels.get("registerYourEvent")),
         backgroundColor: Color(AppColors.get("darkBlue")),
       ),
       backgroundColor: Color(AppColors.get("accentPink")),
@@ -46,19 +47,31 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       disableInput: _eventService.isLoading,
                       title: Labels.get("name"),
                       onSaved: setName,
-                      horizontalPadding: 14,
+                      horizontalPadding: 12,
                       capitalization: TextCapitalization.words,
+                      validator: TextValidator().textIsNotEmpty,
                     ),
                     const CustomDivider(),
                     InputText(
                       maxLines: 4,
                       disableInput: _eventService.isLoading,
-                      title: "Sobre",
+                      title: Labels.get("about"),
                       onSaved: setAbout,
-                      horizontalPadding: 14,
+                      horizontalPadding: 12,
                       capitalization: TextCapitalization.sentences,
+                      validator: TextValidator().textIsNotEmpty,
                     ),
                   ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15, left: 12),
+                child: Text(
+                  "${Labels.get("thisEventWillBe")} ${isSwitched ? Labels.get("private") : Labels.get("public")}",
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 13,
+                      color: Color(AppColors.get("darkBlue"))),
                 ),
               ),
               Switch(
@@ -78,22 +91,22 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   child: CustomButton(
                 loadingButton: _eventService.isLoading,
                 onPressed: () async {
-                  _formKey.currentState!.save();
                   try {
+                    _formKey.currentState!.save();
+                    if (!_formKey.currentState!.validate()) return;
                     await _eventService.createEvent(
                         name: _name,
                         public: !isSwitched,
                         owner: _authService.user!.displayName.toString(),
                         about: _about);
-                    GlobalSnackbar.buildErrorSnackbar(
-                        context, "Evento criado com sucesso");
+                    GlobalSnackbar.showMessage(
+                        context, Labels.get("eventCreated"));
                     Navigator.of(context).pop();
                   } on FirebaseServicesException catch (e) {
-                    GlobalSnackbar.buildErrorSnackbar(
-                        context, Labels.get(e.code));
+                    GlobalSnackbar.showMessage(context, Labels.get(e.code));
                   }
                 },
-                text: "Salvar evento",
+                text: Labels.get("createEvent"),
                 fontSize: 16,
                 size: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
               ))

@@ -23,6 +23,10 @@ class AuthService extends ChangeNotifier {
     return user != null && user!.emailVerified;
   }
 
+  String? get photoUrl {
+    return user != null ? user!.photoURL.toString() : null;
+  }
+
   void _getUser() {
     _user = _auth.currentUser;
     notifyListeners();

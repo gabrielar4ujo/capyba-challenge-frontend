@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/models/event_model.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class CustomExpansionTile extends StatelessWidget {
         children: <Widget>[
           ListTile(
             title: Text(
-              'Sobre o evento:\n\n${event.about}\n',
+              '${Labels.get("aboutTheEvent")}\n\n${event.about}\n',
               style: TextStyle(color: _lightGray, fontSize: 12),
             ),
           ),

@@ -7,7 +7,7 @@ import 'package:capyba_challenge_frontend/shared/constants/regex/regex.dart';
 import 'package:capyba_challenge_frontend/shared/constants/validators/text_validator.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
+import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/input_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,7 +72,7 @@ class _FormRegisterState extends State<FormRegister> {
                               await _imagePicker.takePicture();
                               setState(() {});
                             } catch (e) {
-                              GlobalSnackbar.buildErrorSnackbar(
+                              GlobalSnackbar.showMessage(
                                   context, Labels.get("errorCamera"));
                             }
                           },
@@ -155,12 +155,12 @@ class _FormRegisterState extends State<FormRegister> {
                 _formKey.currentState!.save();
                 if (_formKey.currentState!.validate()) {
                   if (_imagePicker.image == null) {
-                    GlobalSnackbar.buildErrorSnackbar(
+                    GlobalSnackbar.showMessage(
                         context, Labels.get("mandatoryPicture"));
                     return;
                   }
                   if (!_checkStatus!) {
-                    GlobalSnackbar.buildErrorSnackbar(
+                    GlobalSnackbar.showMessage(
                         context, Labels.get("mandatoryPrivacyPolicy"));
                     return;
                   }
