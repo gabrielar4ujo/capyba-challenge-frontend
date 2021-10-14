@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
       try {
         await _authService.login(email, password);
         _navigateToTab();
-      } on AuthException catch (e) {
+      } on FirebaseServicesException catch (e) {
         GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
       }
     }

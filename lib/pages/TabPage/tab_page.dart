@@ -8,7 +8,6 @@ import 'package:capyba_challenge_frontend/pages/TabPage/widgets/custom_drawer.da
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_header.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +51,7 @@ class _TabPageState extends State<TabPage> {
             await _authService.sendEmailVerification();
             GlobalSnackbar.buildErrorSnackbar(
                 context, Labels.get("verificationEmailSent"));
-          } on AuthException catch (e) {
+          } on FirebaseServicesException catch (e) {
             GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
           } finally {
             _scaffoldkey.currentState!.openEndDrawer();
@@ -78,8 +77,9 @@ class _TabPageState extends State<TabPage> {
         backgroundColor: Color(AppColors.get("accentPink")),
       ),
       drawer: CustomDrawer(
-        items: sideBarOptions,
+        items: sideBarOptions.sublist(0, _authService.emailVerified() ? 1 : 2),
         onPressExit: _logOut,
+        photoUrl: _authService.user!.photoURL.toString(),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -104,11 +104,21 @@ class _TabPageState extends State<TabPage> {
           Icons.add,
           color: Color(AppColors.get('darkBlue')),
         ),
-        onPressed: _authService.user!.emailVerified
+        onPressed: _authService.emailVerified()
             ? _navigateToCreateEvent
-            : () {
-                GlobalSnackbar.buildErrorSnackbar(
-                    context, "Verifique seu email para criar um evento!");
+            : () async {
+                try {
+                  await _authService.reloadUser();
+                  if (!_authService.emailVerified()) {
+                    GlobalSnackbar.buildErrorSnackbar(
+                        context, "Verifique seu email para criar um evento!");
+                  } else {
+                    _navigateToCreateEvent();
+                  }
+                } on FirebaseServicesException catch (e) {
+                  GlobalSnackbar.buildErrorSnackbar(
+                      context, "Verifique seu email para criar um evento!");
+                }
               },
       ),
       backgroundColor: Color(AppColors.get("accentPink")),

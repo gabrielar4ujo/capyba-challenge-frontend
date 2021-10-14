@@ -1,3 +1,4 @@
+import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
@@ -9,27 +10,37 @@ class EventService extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  Future createPublicEvent(_name, _public) async {
-    await _collectionReference
-        .collection("home")
-        .add({"eventName": _name, "public": _public});
+  Future createPublicEvent(_name, _public, _about, _owner) async {
+    await _collectionReference.collection("home").add({
+      "eventName": _name,
+      "public": _public,
+      "about": _about,
+      "owner": _owner
+    });
   }
 
-  Future createPrivateEvent(_name, _public) async {
-    await _collectionReference
-        .collection("restricted")
-        .add({"eventName": _name, "public": _public});
+  Future createPrivateEvent(_name, _public, _about, _owner) async {
+    await _collectionReference.collection("restricted").add({
+      "eventName": _name,
+      "public": _public,
+      "about": _about,
+      "owner": _owner
+    });
   }
 
-  Future createEvent(_name, _public) async {
+  Future createEvent(
+      {required String name,
+      required bool public,
+      required String about,
+      required String owner}) async {
     try {
       _isLoading = true;
       notifyListeners();
-      _public
-          ? await createPublicEvent(_name, _public)
-          : await createPrivateEvent(_name, _public);
+      public
+          ? await createPublicEvent(name, public, about, owner)
+          : await createPrivateEvent(name, public, about, owner);
     } catch (e) {
-      print(e);
+      throw FirebaseServicesException("network-error");
     } finally {
       _isLoading = false;
       notifyListeners();

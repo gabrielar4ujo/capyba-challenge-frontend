@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class StorageService {
   final FirebaseStorage _instance = FirebaseStorage.instance;
@@ -16,8 +17,15 @@ class StorageService {
         customMetadata: {'picked-file-path': file.path});
 
     UploadTask uploadTask = ref.putFile(File(file.path), metadata);
-    final TaskSnapshot downloadUrl = (await uploadTask);
-    final String url = await downloadUrl.ref.getDownloadURL();
-    return url;
+    try {
+      final TaskSnapshot downloadUrl =
+          (await uploadTask.timeout(const Duration(seconds: 25), onTimeout: () {
+        throw Error();
+      }));
+      final String url = await downloadUrl.ref.getDownloadURL();
+      return url;
+    } catch (e) {
+      throw FirebaseAuthException(code: 'upload-file-error');
+    }
   }
 }

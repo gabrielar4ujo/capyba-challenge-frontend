@@ -41,7 +41,7 @@ class _FormRegisterState extends State<FormRegister> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InputText(
-            capitalization: true,
+            capitalization: TextCapitalization.words,
             title: Labels.get("mandatoryName"),
             color: Color(AppColors.get("accentPink")),
             horizontalPadding: 0,

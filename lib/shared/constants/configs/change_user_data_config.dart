@@ -1,5 +1,6 @@
 import 'package:capyba_challenge_frontend/shared/constants/regex/regex.dart';
 import 'package:capyba_challenge_frontend/shared/models/change_user_data_model.dart';
+import 'package:flutter/cupertino.dart';
 
 enum EnumChangeUserDataConfig {
   changeName,
@@ -17,7 +18,9 @@ class ChangeUserDataConfig {
     switch (config) {
       case EnumChangeUserDataConfig.changeName:
         return ChangeUserDataModel(
-            appBarTitle: "Alterar nome", optionTitle: "Nome");
+            appBarTitle: "Alterar nome",
+            optionTitle: "Nome",
+            textCapitalization: TextCapitalization.words);
       case EnumChangeUserDataConfig.changeEmail:
         return ChangeUserDataModel(
             appBarTitle: "Alterar email",
@@ -28,6 +31,7 @@ class ChangeUserDataConfig {
         return ChangeUserDataModel(
             appBarTitle: "Alterar senha",
             optionTitle: "Nova senha",
+            hiddenText: true,
             requireReAuthenticate: true);
       case EnumChangeUserDataConfig.changePhoto:
         return ChangeUserDataModel(

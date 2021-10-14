@@ -1,8 +1,8 @@
 import 'package:capyba_challenge_frontend/locales/labels.dart';
+import 'package:capyba_challenge_frontend/pages/RestrictedPage/widgets/restricted_message.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/services/event_service.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_stream_builder.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -20,28 +20,27 @@ class _RestrictedPageState extends State<RestrictedPage> {
   Widget build(BuildContext context) {
     final EventService _eventService = Provider.of<EventService>(context);
     final AuthService _authService = Provider.of<AuthService>(context);
-    return _authService.user!.emailVerified
+    Future _reloadUser() async {
+      try {
+        await _authService.reloadUser();
+        if (_authService.emailVerified()) {
+          GlobalSnackbar.buildErrorSnackbar(
+              context, "Email foi verificado com sucesso!");
+        } else {
+          GlobalSnackbar.buildErrorSnackbar(
+              context, "Email ainda não verificado!");
+        }
+      } on FirebaseServicesException catch (e) {
+        GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
+      }
+    }
+
+    return _authService.emailVerified()
         ? CustomStreamBuilder(
             service: _eventService.getPrivateEvents,
           )
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Restrito: Está restrito? R: ${_authService.emailVerified() ? 'Não' : 'Sim'}',
-              ),
-              CustomButton(
-                onPressed: () async {
-                  try {
-                    await _authService.reloadUser();
-                  } on AuthException catch (e) {
-                    GlobalSnackbar.buildErrorSnackbar(
-                        context, Labels.get(e.code));
-                  }
-                },
-                text: "Já validei meu email",
-              )
-            ],
+        : RestrictedMessage(
+            reloadUser: _reloadUser,
           );
   }
 }

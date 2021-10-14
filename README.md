@@ -26,16 +26,17 @@ samples, guidance on mobile development, and a full API reference.
   ## Segunda Etapa
     [x] Área logado contém duas abas, "Home" e "Restrito"
     [x] Área de Home é acessível para qualquer pessoa logada
-    [x] Área Restrita só é acessível para pessoas que tenham confirmado seu email (Parcialmente implementado, vai ser concluido na Terceira Etapa)
+    [x] Área Restrita só é acessível para pessoas que tenham confirmado seu email
 
   ## Terceira Etapa
     [x] Implementar uma página "Meu Perfil", acessível via um menu lateral
     [x] Na página de "Meu Perfil", a pessoa poderá editar suas informações de cadastro
 
+  ## Quarta Etapa
+    [x] Criar uma collection "home" onde haverá documentos a serem mostrados na aba "Home" do app
+    [x] Criar uma collection "restricted" onde haverá documentos a serem mostrados na aba "Restrito" do app
+    [x] As informações das collections e como serão exibidos (layout) os documentos em cada aba fica a critério de vocês
+
 TODO:
-  [X] Bloqueiar o usuário de usar espaço ao digitar email
-  [X] Iniciar nome do usuário com letra maiúscula
-  [X] Adicionar melhores feedbacks quando ocorrer erro ao logar e registrar
-  [X] Revisar serviço de login (in progress)
-  [] Revisar estrutura do projeto (in progress)
   [] Criar model de user
+  [] Mudar linguagem do app com um clique

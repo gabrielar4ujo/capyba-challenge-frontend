@@ -30,36 +30,43 @@ class _RegisterPageState extends State<RegisterPage> {
       try {
         await _authService.signUp(email, senha, _image, _name);
         _navigateToHomePage();
-      } on AuthException catch (e) {
+      } on FirebaseServicesException catch (e) {
         GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
       }
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(Labels.get("signUp")),
-        backgroundColor: Color(AppColors.get("darkBlue")),
-      ),
-      backgroundColor: Color(AppColors.get("accentPink")),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          alignment: Alignment.bottomCenter,
-          height: _height - _statusBarHeight - _appBarHeight,
-          constraints: const BoxConstraints(
-            minHeight: 650,
-          ),
+    Future<bool> _willPopCallback() async {
+      return Future.value(!_authService.isLoading);
+    }
+
+    return WillPopScope(
+      onWillPop: _willPopCallback,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(Labels.get("signUp")),
+          backgroundColor: Color(AppColors.get("darkBlue")),
+        ),
+        backgroundColor: Color(AppColors.get("accentPink")),
+        body: SingleChildScrollView(
           child: Container(
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25)),
-                color: Color(AppColors.get("darkBlue"))),
-            constraints: const BoxConstraints(minHeight: 500, maxHeight: 570),
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: FormRegister(
-              handleSubmit: _handleSubmit,
-              disableForm: _authService.isLoading,
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            alignment: Alignment.bottomCenter,
+            height: _height - _statusBarHeight - _appBarHeight,
+            constraints: const BoxConstraints(
+              minHeight: 650,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)),
+                  color: Color(AppColors.get("darkBlue"))),
+              constraints: const BoxConstraints(minHeight: 500, maxHeight: 570),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: FormRegister(
+                handleSubmit: _handleSubmit,
+                disableForm: _authService.isLoading,
+              ),
             ),
           ),
         ),

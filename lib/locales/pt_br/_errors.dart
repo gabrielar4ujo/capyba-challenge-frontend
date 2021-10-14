@@ -7,5 +7,7 @@ const errors = {
   "wrong-password": "Email e/ou senha inválidos!",
   "unknown-error": "Erro desconhecido!",
   "too-many-requests":
-      "Foram feitas muitas tentativas. Tente novamente mais tarde!"
+      "Foram feitas muitas tentativas. Tente novamente mais tarde!",
+  "network-error": "Erro de rede!",
+  "upload-file-error": "Problema ao salvar imagem!"
 };

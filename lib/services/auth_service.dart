@@ -12,6 +12,7 @@ class AuthService extends ChangeNotifier {
 
   AuthService() {
     _getUser();
+    reloadUser();
   }
 
   User? get user => _user;
@@ -32,10 +33,13 @@ class AuthService extends ChangeNotifier {
     try {
       _isLoading = true;
       notifyListeners();
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: senha);
+      UserCredential result = await _auth
+          .createUserWithEmailAndPassword(email: email, password: senha)
+          .timeout(const Duration(seconds: 15), onTimeout: () {
+        throw FirebaseAuthException(code: 'network-error');
+      });
       User? localUser = result.user!;
-      if (localUser == null) throw FirebaseAuthException(code: "Network-error");
+      if (localUser == null) throw FirebaseAuthException(code: "network-error");
       String? photoUrl =
           await _storageService.uploadFile(_image, localUser.uid);
       if (photoUrl == null) {
@@ -45,7 +49,7 @@ class AuthService extends ChangeNotifier {
       await localUser.updatePhotoURL(photoUrl);
       _getUser();
     } on FirebaseAuthException catch (e) {
-      throw AuthException(e.code);
+      throw FirebaseServicesException(e.code);
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -56,14 +60,17 @@ class AuthService extends ChangeNotifier {
     try {
       _isLoading = true;
       notifyListeners();
-      UserCredential result =
-          await _auth.signInWithEmailAndPassword(email: email, password: senha);
+      UserCredential result = await _auth
+          .signInWithEmailAndPassword(email: email, password: senha)
+          .timeout(const Duration(seconds: 15), onTimeout: () {
+        throw FirebaseAuthException(code: 'network-error');
+      });
       if (result.user == null) {
-        throw FirebaseAuthException(code: "Network-error");
+        throw FirebaseAuthException(code: "network-error");
       }
       _getUser();
     } on FirebaseAuthException catch (e) {
-      throw AuthException(e.code);
+      throw FirebaseServicesException(e.code);
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -75,16 +82,17 @@ class AuthService extends ChangeNotifier {
       await _auth.signOut();
       _getUser();
     } on FirebaseAuthException catch (e) {
-      throw AuthException(e.code);
+      throw FirebaseServicesException(e.code);
     }
   }
 
   Future<void> reloadUser() async {
     try {
+      if (_auth.currentUser == null) return;
       await _auth.currentUser!.reload();
       _getUser();
     } on FirebaseAuthException catch (e) {
-      throw AuthException(e.code);
+      throw FirebaseServicesException(e.code);
     }
   }
 
@@ -92,7 +100,7 @@ class AuthService extends ChangeNotifier {
     try {
       await user!.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
-      throw AuthException(e.code);
+      throw FirebaseServicesException(e.code);
     }
   }
 
@@ -100,14 +108,18 @@ class AuthService extends ChangeNotifier {
     try {
       _isLoading = true;
       notifyListeners();
-      String? photoUrl = await _storageService.uploadFile(file, user!.uid);
+      String? photoUrl = await _storageService
+          .uploadFile(file, user!.uid)
+          .timeout(const Duration(seconds: 15), onTimeout: () {
+        throw FirebaseAuthException(code: 'network-error');
+      });
       if (photoUrl == null) {
-        throw AuthException("error-upload-image");
+        throw FirebaseServicesException("error-upload-image");
       }
       await user!.updatePhotoURL(photoUrl);
       reloadUser();
     } on FirebaseAuthException catch (e) {
-      throw AuthException(e.code);
+      throw FirebaseServicesException(e.code);
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -121,7 +133,7 @@ class AuthService extends ChangeNotifier {
       await user!.updateDisplayName(_newName);
       reloadUser();
     } on FirebaseAuthException catch (e) {
-      throw AuthException(e.code);
+      throw FirebaseServicesException(e.code);
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -136,7 +148,7 @@ class AuthService extends ChangeNotifier {
       await user!.updateEmail(_newEmail);
       reloadUser();
     } on FirebaseAuthException catch (e) {
-      throw AuthException(e.code);
+      throw FirebaseServicesException(e.code);
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -152,7 +164,7 @@ class AuthService extends ChangeNotifier {
       await user!.updatePassword(_newPassword);
       reloadUser();
     } on FirebaseAuthException catch (e) {
-      throw AuthException(e.code);
+      throw FirebaseServicesException(e.code);
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -11,7 +11,8 @@ class InputText extends StatelessWidget {
   final double horizontalPadding;
   final Function? onSaved;
   final List<TextInputFormatter>? formatter;
-  final bool? capitalization;
+  final TextCapitalization? capitalization;
+  final int? maxLines;
   const InputText(
       {Key? key,
       required this.title,
@@ -21,7 +22,8 @@ class InputText extends StatelessWidget {
       this.disableInput = false,
       this.color = const Color(0xff30475e),
       this.horizontalPadding = 40,
-      this.capitalization = false,
+      this.capitalization = TextCapitalization.none,
+      this.maxLines = 1,
       this.formatter})
       : super(key: key);
   @override
@@ -29,9 +31,7 @@ class InputText extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: TextFormField(
-        textCapitalization: capitalization!
-            ? TextCapitalization.words
-            : TextCapitalization.none,
+        textCapitalization: capitalization!,
         inputFormatters: formatter,
         cursorColor: Color(AppColors.get("lightGray")),
         enabled: !disableInput!,
@@ -42,14 +42,19 @@ class InputText extends StatelessWidget {
         onSaved: (text) => onSaved!(text),
         style: TextStyle(color: Color(AppColors.get("lightGray"))),
         obscureText: hiddenText,
+        minLines: maxLines,
+        maxLines: maxLines,
         decoration: InputDecoration(
-            errorStyle: const TextStyle(height: 1, color: Colors.white70),
-            labelText: title,
-            labelStyle: TextStyle(color: color),
-            enabledBorder:
-                UnderlineInputBorder(borderSide: BorderSide(color: color)),
-            focusedBorder:
-                UnderlineInputBorder(borderSide: BorderSide(color: color))),
+          errorStyle: const TextStyle(height: 1, color: Colors.white70),
+          labelText: title,
+          labelStyle: TextStyle(color: color),
+          enabledBorder: maxLines! == 1
+              ? UnderlineInputBorder(borderSide: BorderSide(color: color))
+              : OutlineInputBorder(borderSide: BorderSide(color: color)),
+          focusedBorder: maxLines! == 1
+              ? UnderlineInputBorder(borderSide: BorderSide(color: color))
+              : OutlineInputBorder(borderSide: BorderSide(color: color)),
+        ),
       ),
     );
   }
