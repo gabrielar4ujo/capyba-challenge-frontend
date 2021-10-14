@@ -1,10 +1,10 @@
 import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/ChangeUserDataPage/change_user_data_page.dart';
+import 'package:capyba_challenge_frontend/pages/ChangeUserDataPage/configs/change_user_data_config.dart';
 import 'package:capyba_challenge_frontend/pages/ChangeUserPhotoPage/change_user_photo_page.dart';
 import 'package:capyba_challenge_frontend/pages/ProfilePage/widgets/custom_tile.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
 import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
-import 'package:capyba_challenge_frontend/shared/constants/configs/change_user_data_config.dart';
 import 'package:capyba_challenge_frontend/shared/models/user_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -25,13 +25,13 @@ class _ProfilePageState extends State<ProfilePage> {
       UserDataModel(
           onTap: _navigateToChangeUserData,
           title: Labels.get("name"),
-          subtitle: _authService.user!.displayName.toString(),
+          subtitle: _authService.displayName.toString(),
           configName: EnumChangeUserDataConfig.changeName,
           handleService: _authService.changeUserName),
       UserDataModel(
           onTap: _navigateToChangeUserData,
           title: Labels.get("email"),
-          subtitle: _authService.user!.email.toString(),
+          subtitle: _authService.email.toString(),
           configName: EnumChangeUserDataConfig.changeEmail,
           handleService: _authService.changeUserEmail),
       UserDataModel(

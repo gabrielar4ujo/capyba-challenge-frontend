@@ -6,8 +6,10 @@ class Camera {
 
   Future<void> takePicture() async {
     XFile? _file = await _imagePicker.pickImage(
-        imageQuality: 50, source: ImageSource.camera);
-    _image = _file;
+        imageQuality: 30, source: ImageSource.camera);
+    if (_file != null) {
+      _image = _file;
+    }
   }
 
   XFile? get image => _image;

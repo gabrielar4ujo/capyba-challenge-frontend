@@ -8,7 +8,7 @@ import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dar
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_header.dart';
-import 'package:capyba_challenge_frontend/shared/widgets/global_snackbar.dart';
+import 'package:capyba_challenge_frontend/utils/global_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,8 +30,8 @@ class _LoginPageState extends State<LoginPage> {
       try {
         await _authService.login(email, password);
         _navigateToTab();
-      } on AuthException catch (e) {
-        GlobalSnackbar.buildErrorSnackbar(context, Labels.get(e.code));
+      } on FirebaseServicesException catch (e) {
+        GlobalSnackbar.showMessage(context, Labels.get(e.code));
       }
     }
 

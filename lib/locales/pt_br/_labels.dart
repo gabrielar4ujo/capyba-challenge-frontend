@@ -27,5 +27,18 @@ const labels = {
   "personalData": "Dados pessoais",
   "verificationEmailSent": "Email de verificação enviado!",
   "publicEvents": "Eventos\nPúblicos",
-  "privateEvents": "Eventos\nPrivados"
+  "privateEvents": "Eventos\nPrivados",
+  "registerYourEvent": "Cadastre seu evento",
+  "about": "Sobre",
+  "eventCreated": "Evento criado com sucesso",
+  "emailHasBeenVerified": "Email foi verificado com sucesso!",
+  "emailNotYetVerified": "Email ainda não verificado!",
+  "areaIsRestricted":
+      "Está área é restrita para os emails que ainda não foram verificados.\nAcesse o menu lateral e valide seu email!",
+  "checkYourEmailToCreateEvent": "Verifique seu email para criar um evento!",
+  "aboutTheEvent": "Sobre o evento:",
+  "noEventToList": "Sem eventos para listar :(",
+  "thisEventWillBe": "Esse evento será",
+  "private": "privado",
+  "public": "público",
 };
