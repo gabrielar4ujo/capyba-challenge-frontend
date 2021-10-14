@@ -33,8 +33,8 @@ samples, guidance on mobile development, and a full API reference.
     [x] Na página de "Meu Perfil", a pessoa poderá editar suas informações de cadastro
 
 TODO:
-  [] Bloqueiar o usuário de usar espaço ao digitar email
-  [] Iniciar nome do usuário com letra maiúscula
-  [] Adicionar melhores feedbacks quando ocorrer erro ao logar e registrar
-  [] Revisar serviço de login (in progress)
+  [X] Bloqueiar o usuário de usar espaço ao digitar email
+  [X] Iniciar nome do usuário com letra maiúscula
+  [X] Adicionar melhores feedbacks quando ocorrer erro ao logar e registrar
+  [X] Revisar serviço de login (in progress)
   [] Revisar estrutura do projeto (in progress)
