@@ -71,3 +71,7 @@ Pôr arquivo 'google-services.json' na seguinte pasta -> 'android/app/'
 Habilitar autenticação por E-mail
 Habilitar Firestore Database
 Habilitar Storage
+
+### 5 - Finalizado
+
+Agora so rodar o app em algum device com ```flutter run```
