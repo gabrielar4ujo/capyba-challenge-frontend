@@ -68,11 +68,10 @@ Ao entrar na pasta do projeto, rodar no terminal(pelo VsCode, por exemplo) ```fl
 [Link do passo a passo](https://firebase.google.com/docs/functions/get-started?hl=pt)
 
 Não esquecer de:
-
-Pôr arquivo 'google-services.json' na seguinte pasta -> 'android/app/';
-Habilitar autenticação por E-mail;
-Habilitar Firestore Database;
-Habilitar Storage.
+- Pôr arquivo 'google-services.json' na seguinte pasta -> 'android/app/';
+- Habilitar autenticação por E-mail;
+- Habilitar Firestore Database;
+- Habilitar Storage.
 
 ### 5 - Finalizado
 
