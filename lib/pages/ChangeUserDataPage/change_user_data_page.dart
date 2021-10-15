@@ -122,6 +122,18 @@ class _ChangeUserDataPageState extends State<ChangeUserDataPage> {
                     try {
                       _formKey.currentState!.save();
                       if (!_formKey.currentState!.validate()) return;
+                      if (_changeUserDataModel.hiddenText! &&
+                          _currentPassword.compareTo(_newField) == 0) {
+                        GlobalSnackbar.showMessage(
+                            context, Labels.get("identicalPasswords"));
+                        return;
+                      }
+                      if (!_changeUserDataModel.hiddenText! &&
+                          _currentEmail.compareTo(_newField) == 0) {
+                        GlobalSnackbar.showMessage(
+                            context, Labels.get("identicalEmails"));
+                        return;
+                      }
                       _changeUserDataModel.requireReAuthenticate == true
                           ? await widget.handleFunction(
                               _newField, _currentEmail, _currentPassword)

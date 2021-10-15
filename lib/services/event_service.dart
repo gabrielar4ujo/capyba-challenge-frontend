@@ -10,6 +10,16 @@ class EventService extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+  void _setLoading() {
+    _isLoading = true;
+    notifyListeners();
+  }
+
+  void _resetLoading() {
+    _isLoading = false;
+    notifyListeners();
+  }
+
   Future createPublicEvent(_name, _public, _about, _owner) async {
     await _collectionReference.collection("home").add({
       "eventName": _name,
@@ -36,16 +46,14 @@ class EventService extends ChangeNotifier {
       required String about,
       required String owner}) async {
     try {
-      _isLoading = true;
-      notifyListeners();
+      _setLoading();
       public
           ? await createPublicEvent(name, public, about, owner)
           : await createPrivateEvent(name, public, about, owner);
     } catch (e) {
       throw FirebaseServicesException("network-error");
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _resetLoading();
     }
   }
 

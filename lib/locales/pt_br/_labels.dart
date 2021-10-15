@@ -41,4 +41,6 @@ const labels = {
   "thisEventWillBe": "Esse evento será",
   "private": "privado",
   "public": "público",
+  "identicalPasswords": "A nova senha é idêntica a atual!",
+  "identicalEmails": "Seu novo email é idêntico ao atual!"
 };

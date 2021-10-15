@@ -28,11 +28,20 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
+  void _setLoading() {
+    _isLoading = true;
+    notifyListeners();
+  }
+
+  void _resetLoading() {
+    _isLoading = false;
+    notifyListeners();
+  }
+
   Future<void> signUp(
       String email, String senha, File _image, String _name) async {
     try {
-      _isLoading = true;
-      notifyListeners();
+      _setLoading();
       UserCredential result = await _auth
           .createUserWithEmailAndPassword(email: email, password: senha)
           .timeout(const Duration(seconds: 25), onTimeout: () {
@@ -48,15 +57,13 @@ class AuthService extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _resetLoading();
     }
   }
 
   Future<void> login(String email, String senha) async {
     try {
-      _isLoading = true;
-      notifyListeners();
+      _setLoading();
       UserCredential result = await _auth
           .signInWithEmailAndPassword(email: email, password: senha)
           .timeout(const Duration(seconds: 15), onTimeout: () {
@@ -69,8 +76,7 @@ class AuthService extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _resetLoading();
     }
   }
 
@@ -103,8 +109,7 @@ class AuthService extends ChangeNotifier {
 
   Future<void> updatePhotoURL(File? file) async {
     try {
-      _isLoading = true;
-      notifyListeners();
+      _setLoading();
       String? photoUrl = await _storageService
           .uploadFile(file, _user!.uid)
           .timeout(const Duration(seconds: 20), onTimeout: () {
@@ -118,53 +123,53 @@ class AuthService extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _resetLoading();
     }
   }
 
   Future<void> changeUserName(_newName) async {
     try {
-      _isLoading = true;
-      notifyListeners();
+      _setLoading();
       await _user!.updateDisplayName(_newName);
       await reloadUser();
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _resetLoading();
     }
   }
 
   Future<void> changeUserEmail(_newEmail, _oldEmail, _currentPassword) async {
     try {
-      await login(_oldEmail, _currentPassword);
-      _isLoading = true;
-      notifyListeners();
-      await _user!.updateEmail(_newEmail);
+      _setLoading();
+      UserCredential localUser =
+          await reAuthenticate(_oldEmail, _currentPassword);
+      await localUser.user!.updateEmail(_newEmail);
       await reloadUser();
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _resetLoading();
     }
   }
 
   Future<void> changeUserPassword(
       _newPassword, _currentEmail, _oldPassword) async {
     try {
-      await login(_currentEmail, _oldPassword);
-      _isLoading = true;
-      notifyListeners();
-      await _user!.updatePassword(_newPassword);
+      _setLoading();
+      UserCredential localUser =
+          await reAuthenticate(_currentEmail, _oldPassword);
+      await localUser.user!.updatePassword(_newPassword);
       await reloadUser();
     } on FirebaseAuthException catch (e) {
       throw FirebaseServicesException(e.code);
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _resetLoading();
     }
+  }
+
+  Future<UserCredential> reAuthenticate(_email_, password) async {
+    return await _user!.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: _email_, password: password));
   }
 }
