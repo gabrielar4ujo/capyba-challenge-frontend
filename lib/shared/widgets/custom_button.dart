@@ -1,4 +1,4 @@
-import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
+import 'package:capyba_challenge_frontend/config/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {

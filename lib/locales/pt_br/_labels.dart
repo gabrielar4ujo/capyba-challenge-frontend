@@ -34,7 +34,7 @@ const labels = {
   "emailHasBeenVerified": "Email foi verificado com sucesso!",
   "emailNotYetVerified": "Email ainda não verificado!",
   "areaIsRestricted":
-      "Está área é restrita para os emails que ainda não foram verificados.\nAcesse o menu lateral e valide seu email!",
+      "Esta área é restrita para os emails que ainda não foram verificados.\nAcesse o menu lateral e valide seu email!",
   "checkYourEmailToCreateEvent": "Verifique seu email para criar um evento!",
   "aboutTheEvent": "Sobre o evento:",
   "noEventToList": "Sem eventos para listar :(",

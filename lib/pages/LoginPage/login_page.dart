@@ -1,9 +1,9 @@
+import 'package:capyba_challenge_frontend/config/colors/colors.dart';
 import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/LoginPage/widgets/form_login.dart';
 import 'package:capyba_challenge_frontend/pages/RegisterPage/register_page.dart';
 import 'package:capyba_challenge_frontend/pages/TabPage/tab_page.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
-import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/models/auth_exception_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_button.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';

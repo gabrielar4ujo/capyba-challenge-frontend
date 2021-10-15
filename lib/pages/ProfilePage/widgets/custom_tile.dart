@@ -1,5 +1,5 @@
+import 'package:capyba_challenge_frontend/config/colors/colors.dart';
 import 'package:capyba_challenge_frontend/locales/labels.dart';
-import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/models/user_data_model.dart';
 import 'package:capyba_challenge_frontend/shared/widgets/custom_divider.dart';
 import 'package:flutter/material.dart';

@@ -1,10 +1,10 @@
+import 'package:capyba_challenge_frontend/config/colors/colors.dart';
 import 'package:capyba_challenge_frontend/locales/labels.dart';
 import 'package:capyba_challenge_frontend/pages/ChangeUserDataPage/change_user_data_page.dart';
 import 'package:capyba_challenge_frontend/pages/ChangeUserDataPage/configs/change_user_data_config.dart';
 import 'package:capyba_challenge_frontend/pages/ChangeUserPhotoPage/change_user_photo_page.dart';
 import 'package:capyba_challenge_frontend/pages/ProfilePage/widgets/custom_tile.dart';
 import 'package:capyba_challenge_frontend/services/auth_service.dart';
-import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
 import 'package:capyba_challenge_frontend/shared/models/user_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         backgroundColor: Color(AppColors.get("darkBlue")),
         title: Text(
-          "Meu perfil",
+          Labels.get("myProfile"),
           style: TextStyle(color: Color(AppColors.get("lightGray"))),
         ),
       ),

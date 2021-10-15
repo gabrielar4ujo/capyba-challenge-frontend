@@ -1,4 +1,4 @@
-import 'package:capyba_challenge_frontend/shared/constants/colors/_default_colors.dart';
+import 'package:capyba_challenge_frontend/config/colors/_default_colors.dart';
 
 class AppColors {
   static int get(String colorName) {
