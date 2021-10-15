@@ -44,11 +44,11 @@ samples, guidance on mobile development, and a full API reference.
 
     OBSERVAÇÃO: Quinta etapa concluída de maneira diferente, ao clicar em "Validar Email" é enviado um email com uma URL que ao ser clicado irá validar o email.
 
-### Sobre o app
-  Descrição
+## Sobre o app
+  # Descrição
     A ideia do App é o usuário poder registrar-se com um email e assim criar eventos públicos ou privados para que outros usuários possam ver.
 
-  Regras de negócio
+  # Regras de negócio
     - Para criar e ver eventos privados o email do usuário deve ser validado, caso não esteja, o usuário receberá um aviso para validar seu email;
     - O usuário pode a qualquer momento alterar suas informações através do menu lateral ao clicar em meu perfil;
     - Os eventos públicos são sempre visíveis para qualquer usuário;
