@@ -10,28 +10,28 @@ O proposto desafio tinha como requisito desenvolver o App com Flutter.
 
 ## 2 - Tasks
 
-1 - Primeira Etapa
+## Primeira Etapa
     [x] Cadastro e login via email
     [x] Exigir selfie do usuário no cadastro
     [x] Exigir o aceite de termos de uso e políticas de privacidade
     [x] O usuário poderá ler o termo e política
     [x] Após o login da pessoa, caso ela feche o app e abra de novo, o app deve continuar logado e mostrar a página de home
   
-2 - Segunda Etapa
+## Segunda Etapa
     [x] Área logado contém duas abas, "Home" e "Restrito"
     [x] Área de Home é acessível para qualquer pessoa logada
     [x] Área Restrita só é acessível para pessoas que tenham confirmado seu email
 
-3 - Terceira Etapa
+## Terceira Etapa
     [x] Implementar uma página "Meu Perfil", acessível via um menu lateral
     [x] Na página de "Meu Perfil", a pessoa poderá editar suas informações de cadastro
 
-4 - Quarta Etapa
+## Quarta Etapa
     [x] Criar uma collection "home" onde haverá documentos a serem mostrados na aba "Home" do app
     [x] Criar uma collection "restricted" onde haverá documentos a serem mostrados na aba "Restrito" do app
     [x] As informações das collections e como serão exibidos (layout) os documentos em cada aba fica a critério de vocês
 
-5 - Quinta Etapa
+## Quinta Etapa
     [] Adicionar uma opção no menu lateral "Validar Email" que direcionará o usuário para a tela de confirmação de e-mail
     [] Na tela de confirmação de e-mail, a pessoa deverá clicar num botão para receber um token
     [] Após clicar no botão de receber um token, deve abrir um modal pedindo para a pessoa digitar o token  recebido por e-mail e efetuar a confirmação
@@ -66,11 +66,13 @@ Ao entrar na pasta do projeto, rodar no terminal(pelo VsCode, por exemplo) ```fl
 ### 4 - Criar um projeto Android no Firebase
 
 [Link do passo a passo](https://firebase.google.com/docs/functions/get-started?hl=pt)
-Não esquecer de: 
-Pôr arquivo 'google-services.json' na seguinte pasta -> 'android/app/'
-Habilitar autenticação por E-mail
-Habilitar Firestore Database
-Habilitar Storage
+
+Não esquecer de:
+
+Pôr arquivo 'google-services.json' na seguinte pasta -> 'android/app/';
+Habilitar autenticação por E-mail;
+Habilitar Firestore Database;
+Habilitar Storage.
 
 ### 5 - Finalizado
 
