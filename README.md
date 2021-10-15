@@ -1,6 +1,6 @@
 # capyba_challenge_frontend
 
-A new Flutter project.
+Desafio App Flutter.
 
 ## Getting Started
 
@@ -37,6 +37,19 @@ samples, guidance on mobile development, and a full API reference.
     [x] Criar uma collection "restricted" onde haverá documentos a serem mostrados na aba "Restrito" do app
     [x] As informações das collections e como serão exibidos (layout) os documentos em cada aba fica a critério de vocês
 
-TODO:
-  [] Criar model de user
-  [] Mudar linguagem do app com um clique
+  ## Quinta Etapa
+    [] Adicionar uma opção no menu lateral "Validar Email" que direcionará o usuário para a tela de confirmação de e-mail
+    [] Na tela de confirmação de e-mail, a pessoa deverá clicar num botão para receber um token
+    [] Após clicar no botão de receber um token, deve abrir um modal pedindo para a pessoa digitar o token  recebido por e-mail e efetuar a confirmação
+
+    OBSERVAÇÃO: Quinta etapa concluída de maneira diferente, ao clicar em "Validar Email" é enviado um email com uma URL que ao ser clicado irá validar o email.
+
+### Tasks
+  ## Sobre o app
+    A ideia do App é o usuário poder registrar-se com um email e assim criar eventos públicos ou privados para que outros usuários possam ver.
+
+  ## Regras de negócio
+    - Para criar e ver eventos privados o email do usuário deve ser validado, caso não esteja, o usuário receberá um aviso para validar seu email;
+    - O usuário pode a qualquer momento alterar suas informações através do menu lateral ao clicar em meu perfil;
+    - Os eventos públicos são sempre visíveis para qualquer usuário;
+    - Para registrar-se o usuário deve aceitar os termos de política de privacidade.

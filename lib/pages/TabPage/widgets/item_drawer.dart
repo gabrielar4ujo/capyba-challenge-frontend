@@ -1,4 +1,4 @@
-import 'package:capyba_challenge_frontend/shared/constants/colors/colors.dart';
+import 'package:capyba_challenge_frontend/config/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class ItemDrawer extends StatelessWidget {
@@ -12,7 +12,10 @@ class ItemDrawer extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          title: Text(title),
+          title: Text(
+            title,
+            style: TextStyle(color: Color(AppColors.get("darkBlue"))),
+          ),
           onTap: () => onTap(),
         ),
         Container(

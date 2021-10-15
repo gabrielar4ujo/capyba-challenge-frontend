@@ -2,7 +2,7 @@
     package="com.example.capyba_challenge_frontend">
    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
    <application
-        android:label="capyba_challenge_frontend"
+        android:label="EventApp"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,4 +1,3 @@
-import 'package:capyba_challenge_frontend/utils/validators/text_validator.dart';
 import 'package:flutter/services.dart';
 
 class ChangeUserDataModel {
